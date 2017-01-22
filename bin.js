@@ -4,7 +4,7 @@
 var inPath = require("./inPath");
 var nodeNw = require("./index");
 
-if (inPath("nw")) {
+if (process.platform === "win32" ? inPath("nw.exe") : inPath("nw")) {
   nodeNw(process.cwd(), process.argv.slice(2));
 } else {
   console.error("You need to have the 'nw' binary installed and in your PATH to use node-nw.");
