@@ -1,0 +1,10 @@
+{
+  "name": "node-nw",
+  "main": "index.html",
+  "chromium-args": "--mixed-context --disable-gpu",
+  "window": {
+    "frame": false,
+    "toolbar": false,
+    "transparent": true
+  }
+}
