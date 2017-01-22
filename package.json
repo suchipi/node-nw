@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/suchipi/node-nw/issues"
   },
-  "homepage": "https://github.com/suchipi/node-nw#readme"
+  "homepage": "https://github.com/suchipi/node-nw#readme",
+  "dependencies": {
+    "pipe-wrench": "^0.1.0"
+  }
 }
