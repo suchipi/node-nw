@@ -3,8 +3,8 @@
   "main": "index.html",
   "chromium-args": "--mixed-context --disable-gpu",
   "window": {
-    "frame": false,
-    "toolbar": false,
-    "transparent": true
+    "transparent": false,
+    "width": 0,
+    "height": 0
   }
 }

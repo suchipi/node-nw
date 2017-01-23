@@ -1,13 +1,21 @@
 "use strict";
-var path = require("path");
+require("./setup");
 
-// If invoked with '-e', run the script.
-// Otherwise, if invoked with a file path, require and run it.
-// Otherwise, open devtools as a repl.
-if (process.argv[1] === "-e" && process.argv[2]) {
-  eval(process.argv[2]);
-} else if (process.argv[1]) {
-  require(path.resolve(process.cwd(), process.argv[1]));
-} else { // REPL mode
-  win.showDevTools();
-}
+var argv = require("./argv");
+var replClient = require("./replClient");
+
+var executionTarget = argv.target(process.argv.slice(1));
+var target = executionTarget[0];
+var arg = executionTarget[1];
+
+({
+  "eval": function() {
+    eval(arg);
+  },
+  "require": function() {
+    require(arg);
+  },
+  "repl": function() {
+    replClient.start();
+  },
+})[target]();

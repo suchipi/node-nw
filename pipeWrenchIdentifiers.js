@@ -4,5 +4,6 @@ module.exports = function(pid) {
     stderr: "node-nw-stderr-" + pid,
     stdin: "node-nw-stdin-" + pid,
     ipc: "node-nw-ipc-" + pid,
+    repl: "node-nw-repl-" + pid,
   };
 };
