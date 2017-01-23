@@ -2,7 +2,7 @@ var repl = require("repl");
 var ipc = require("./ipc");
 
 function start(socket) {
-  const replServer = repl.start({
+  var replServer = repl.start({
     useGlobal: true,
     writer: function(output) { return output; },
     eval: function(cmd, context, filename, callback) {
