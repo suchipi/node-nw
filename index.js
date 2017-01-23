@@ -2,27 +2,27 @@
 var spawn = require("child_process").spawn;
 var path = require("path");
 var pipeWrench = require("pipe-wrench");
+var pipeWrenchIdentifiers = require("./pipeWrenchIdentifiers");
 var handleIpc = require("./handleIpc");
 
 module.exports = function nodeNw(cwd, argv) {
-  var stdoutIdentifier = "node-nw-stdout-" + process.pid;
-  var stderrIdentifier = "node-nw-stderr-" + process.pid;
-  var stdinIdentifier = "node-nw-stdin-" + process.pid;
-  var ipcIdentifier = "node-nw-ipc-" + process.pid;
+  var identifiers = pipeWrenchIdentifiers(process.pid);
 
-  pipeWrench.server(stdoutIdentifier, (socket) => socket.pipe(process.stdout));
-  pipeWrench.server(stderrIdentifier, (socket) => socket.pipe(process.stderr));
-  pipeWrench.server(stdinIdentifier, (socket) => process.stdin.pipe(socket));
-  pipeWrench.server(ipcIdentifier, (socket) => {
+  pipeWrench.server(identifiers.stdout, (socket) => socket.pipe(process.stdout));
+  pipeWrench.server(identifiers.stderr, (socket) => socket.pipe(process.stderr));
+  pipeWrench.server(identifiers.stdin, (socket) => process.stdin.pipe(socket));
+  pipeWrench.server(identifiers.ipc, (socket) => {
     socket.setEncoding("utf-8");
     socket.on("data", handleIpc(socket));
   });
 
   spawn(
     "nw",
-    [path.resolve(path.join(__dirname, "node-nw")), cwd]
-      .concat([stdoutIdentifier, stderrIdentifier, stdinIdentifier, ipcIdentifier])
-      .concat(argv),
+    [
+      path.resolve(path.join(__dirname, "node-nw")),
+      cwd,
+      process.pid
+    ].concat(argv),
     { stdio: "inherit" }
   );
 
