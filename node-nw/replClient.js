@@ -21,7 +21,12 @@ function start() {
     } catch (error) {
       result = error;
     }
-    repl.write(util.inspect(result, { colors: supportsColor }));
+    try {
+      result = util.inspect(result, { colors: supportsColor });
+    } catch (error) {
+      result = error.stack;
+    }
+    repl.write(result);
   });
 }
 

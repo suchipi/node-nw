@@ -9,6 +9,12 @@ process.on("exit", function() {
   nw.App.closeAllWindows();
 });
 
+// Log uncaught errors to console
+process.on("uncaughtException", function(error) {
+  console.error(error);
+  process.exit(-1);
+});
+
 // We get launched with these arguments:
 // 0: Environment config JSON string
 // ...: process.argv.slice(2) from node
