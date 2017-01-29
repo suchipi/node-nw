@@ -1,16 +1,33 @@
 "use strict";
 var path = require("path");
+var yargsParser = require("yargs-parser");
 
-// If invoked with '-e', run the script.
-// Otherwise, if invoked with a file path, require and run it.
-// Otherwise, open a repl.
-function target(argv) {
-  if (argv[0] === "-e" && argv[1]) {
-    return ["eval", argv[1]];
-  } else if (argv[0]) {
-    return ["require", path.resolve(process.cwd(), argv[0])];
-  } else {
+function target(argv, stdinIsTTY) {
+  var config = yargsParser(argv, {
+    alias: {
+      "version": ["v"],
+      "help": ["h"],
+      "eval": ["e"],
+      "interactive": ["i"],
+    }
+  });
+
+  if (config.version) {
+    return ["version"];
+  } else if (config.help) {
+    return ["help"];
+  } else if (config.eval) {
+    return ["eval", config.eval];
+  } else if (config.interactive) {
     return ["repl"];
+  } else if (config._[0]) {
+    return ["require", path.resolve(process.cwd(), config._[0])];
+  } else {
+    if (stdinIsTTY) {
+      return ["repl"];
+    } else {
+      return ["help"];
+    }
   }
 }
 

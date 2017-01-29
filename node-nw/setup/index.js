@@ -10,21 +10,16 @@ process.on("exit", function() {
 });
 
 // We get launched with these arguments:
-// 0: process.cwd() from node
-// 1: pid of the node process
-// 2: Whether the terminal running the node
-//    process supports color ("true" or "false")
+// 0: Environment config JSON string
 // ...: process.argv.slice(2) from node
-var cwd = nw.App.argv[0];
-var pid = nw.App.argv[1];
-var supportsColor = nw.App.argv[2] === "true";
-var argv = nw.App.argv.slice(3);
+var envConfig = JSON.parse(nw.App.argv[0]);
+var argv = nw.App.argv.slice(1);
 
 // process.stdout, process.stderr, and process.stdin don't work in nw on Windows,
 // so we use an IPC library to create sockets back to the node process, and then
 // override the properties on process to use those instead.
-var shouldUseRepl = require("../argv").target(argv)[0] === "repl";
-var sockets = require("./sockets")(pid, shouldUseRepl);
+var shouldUseRepl = require("../argv").target(argv, envConfig.stdinIsTTY)[0] === "repl";
+var sockets = require("./sockets")(envConfig.pid, shouldUseRepl);
 
 var ipc = require("./ipc");
 ipc.setSocket(sockets.ipc);
@@ -40,13 +35,19 @@ sockets.stdin.setRawMode = function(bool) {
   }
 }
 
+// process.stdout and process.stdin normally have an `isTTY` boolean
+// property on them that can be used to detect if they are a tty.
+// We get this from the env config and set it appropriately.
+sockets.stdout.isTTY = envConfig.stdoutIsTTY;
+sockets.stdin.isTTY = envConfig.stdinIsTTY;
+
 // Log to node stdout/stderr in addition to browser console
 global.console = require("./console")(sockets.stdout, sockets.stderr);
 
 if (shouldUseRepl) {
   var replClient = require("../replClient");
   replClient.setSocket(sockets.repl);
-  replClient.setSupportsColor(supportsColor);
+  replClient.setSupportsColor(envConfig.supportsColor);
 }
 
 // Override the real process.stdout, process.sterr, and process.stdin
@@ -56,7 +57,7 @@ Object.defineProperty(process, "stderr", { value: sockets.stderr });
 Object.defineProperty(process, "stdin", { value: sockets.stdin });
 
 // Set process.cwd() to what it was in node
-process.chdir(cwd);
+process.chdir(envConfig.cwd);
 
 // Override process.argv to be ["/absolutePathTo/nw", ...argv].
 // This fits the same shape node usually has: ["/absolutePathTo/node", ...argv].

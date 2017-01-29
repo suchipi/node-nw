@@ -7,8 +7,22 @@ var ipc = require("./ipc");
 var replServer = require("./replServer");
 var argvTarget = require("./node-nw/argv").target;
 var supportsColor = require("supports-color");
+var version = require("./package.json").version;
+var help = require("./help");
 
 module.exports = function nodeNw(cwd, argv) {
+  var target = argvTarget(argv, process.stdin.isTTY)[0];
+
+  if (target === "version") {
+    console.log("v" + version);
+    process.exit(0);
+  }
+
+  if (target === "help") {
+    help();
+    process.exit(0);
+  }
+
   var identifiers = pipeWrenchIdentifiers(process.pid);
 
   pipeWrench.server(identifiers.stdout, function(socket) { socket.pipe(process.stdout); });
@@ -19,7 +33,6 @@ module.exports = function nodeNw(cwd, argv) {
     ipc.setSocket(socket);
   });
 
-  var target = argvTarget(argv)[0];
   if (target === "repl") {
     pipeWrench.server(identifiers.repl, function(socket) {
       socket.setEncoding("utf-8");
@@ -27,13 +40,19 @@ module.exports = function nodeNw(cwd, argv) {
     });
   }
 
+  var envConfig = {
+    cwd: cwd,
+    pid: process.pid,
+    supportsColor: Boolean(supportsColor),
+    stdinIsTTY: Boolean(process.stdin.isTTY),
+    stdoutIsTTY: Boolean(process.stdout.isTTY),
+  };
+
   var nw = spawn(
     "nw",
     [
       path.resolve(path.join(__dirname, "node-nw")),
-      cwd,
-      process.pid,
-      String(Boolean(supportsColor))
+      JSON.stringify(envConfig)
     ].concat(argv),
     { stdio: "inherit" }
   );

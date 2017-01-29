@@ -22,6 +22,7 @@
   "homepage": "https://github.com/suchipi/node-nw#readme",
   "dependencies": {
     "pipe-wrench": "^0.1.0",
-    "supports-color": "^3.2.3"
+    "supports-color": "^3.2.3",
+    "yargs-parser": "^4.2.1"
   }
 }

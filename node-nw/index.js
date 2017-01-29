@@ -4,7 +4,7 @@ require("./setup");
 var argv = require("./argv");
 var replClient = require("./replClient");
 
-var executionTarget = argv.target(process.argv.slice(1));
+var executionTarget = argv.target(process.argv.slice(1), process.stdin.isTTY);
 var target = executionTarget[0];
 var arg = executionTarget[1];
 
