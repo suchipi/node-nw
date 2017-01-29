@@ -45,7 +45,6 @@ module.exports = function nodeNw(cwd, argv) {
   if (process.platform === "win32") {
     var readline = require("readline").createInterface({
       input: process.stdin,
-      output: process.stdout,
     });
 
     readline.on("SIGINT", function() {
