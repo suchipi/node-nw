@@ -68,3 +68,7 @@ process.chdir(envConfig.cwd);
 // Override process.argv to be ["/absolutePathTo/nw", ...argv].
 // This fits the same shape node usually has: ["/absolutePathTo/node", ...argv].
 process.argv = [process.argv[0]].concat(argv);
+
+// Some things blow up if you try to inspect them.
+// Patch them so that doesn't happen.
+require("./inspect-patches");
