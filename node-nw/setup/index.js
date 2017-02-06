@@ -59,10 +59,17 @@ if (shouldUseRepl) {
   replClient.setSupportsColor(envConfig.supportsColor);
 }
 
-// Override the real process.stdout, process.sterr, and process.stdin
-// In nw on Windows, these were DummyStreams
-Object.defineProperty(process, "stdout", { value: sockets.stdout });
-Object.defineProperty(process, "stderr", { value: sockets.stderr });
+// If process.stdout and process.stderr aren't usable streams (win32),
+// then use the IPC ones instead. TODO: Don't create the sockets on
+// platforms where they aren't needed.
+if (process.stdout.constructor.name !== "WriteStream") {
+  Object.defineProperty(process, "stdout", { value: sockets.stdout });
+}
+if (process.stderr.constructor.name !== "WriteStream") {
+  Object.defineProperty(process, "stderr", { value: sockets.stderr });
+}
+
+//
 Object.defineProperty(process, "stdin", { value: sockets.stdin });
 
 // Set process.cwd() to what it was in node
