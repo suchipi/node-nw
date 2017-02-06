@@ -36,10 +36,13 @@ ipc.setSocket(sockets.ipc);
 sockets.stdin.setRawMode = function(bool) {
   if (bool) {
     ipc.send("stdin-raw-mode:true");
+    sockets.stdin.isRaw = true;
   } else {
     ipc.send("stdin-raw-mode:false");
+    sockets.stdin.isRaw = false;
   }
 }
+sockets.stdin.isRaw = false;
 
 // process.stdout and process.stdin normally have an `isTTY` boolean
 // property on them that can be used to detect if they are a tty.
