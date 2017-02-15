@@ -18,10 +18,7 @@ function start(socket) {
   });
 
   replServer.on("close", function() {
-    ipc.send("exit");
-    setTimeout(function() {
-      process.exit(0);
-    }, 0);
+    process.exit(0);
   });
 
   replServer.defineCommand('devtools', {
