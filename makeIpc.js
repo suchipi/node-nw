@@ -7,13 +7,18 @@ module.exports = function makeIpc(receiveHandlers) {
     });
   }
 
-  function receive(command) {
-    var handler = receiveHandlers[command];
-    if (handler) handler();
+  function receive(data) {
+    var command = JSON.parse(data);
+    var handler = receiveHandlers[command.name];
+    if (handler) handler(command.argument);
   }
 
-  function send(command) {
-    socket.write(command);
+  function send(name, argument) {
+    var data = JSON.stringify({
+      name: name,
+      argument: argument,
+    });
+    socket.write(data);
   }
 
   return {

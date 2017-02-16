@@ -12,16 +12,18 @@ function determineTarget(argv) {
 }
 
 function handleNodeOnlyTargets(target) {
+  var shouldExit = false;
   if (target === "version") {
     var version = require("./package.json").version;
     console.log("v" + version);
-    exit(0);
+    shouldExit = true;
   }
   if (target === "help") {
     var helpText = require("./help");
     console.log(helpText);
-    exit(0);
+    shouldExit = true;
   }
+  return shouldExit;
 }
 
 function setupPipeWrenchSockets(target) {
@@ -136,6 +138,11 @@ function startNw(envConfig, userDataDir, argv) {
     exit();
   });
 
+  nw.once("exit", function(code) {
+    running = false;
+    exit();
+  });
+
   nw.once("error", function() {
     console.error("An error occurred in the child nw process");
     running = false;
@@ -174,10 +181,12 @@ function handleExit() {
 
 module.exports = function nodeNw(cwd, argv) {
   var target = determineTarget(argv);
-  handleNodeOnlyTargets(target);
-  setupPipeWrenchSockets(target);
-  var userDataDir = prepareUserDataDir();
-  var envConfig = determineEnvConfig(cwd);
-  startNw(envConfig, userDataDir, argv);
-  handleExit();
+  var shouldExit = handleNodeOnlyTargets(target);
+  if (!shouldExit) {
+    setupPipeWrenchSockets(target);
+    var userDataDir = prepareUserDataDir();
+    var envConfig = determineEnvConfig(cwd);
+    startNw(envConfig, userDataDir, argv);
+    handleExit();
+  }
 }

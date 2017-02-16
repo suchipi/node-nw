@@ -29,10 +29,10 @@ ipc.setSocket(sockets.ipc);
 // node process to set raw mode on the "real" process.stdin on its end.
 sockets.stdin.setRawMode = function(bool) {
   if (bool) {
-    ipc.send("stdin-raw-mode:true");
+    ipc.send("stdin-raw-mode", true);
     sockets.stdin.isRaw = true;
   } else {
-    ipc.send("stdin-raw-mode:false");
+    ipc.send("stdin-raw-mode", false);
     sockets.stdin.isRaw = false;
   }
 }

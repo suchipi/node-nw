@@ -140,6 +140,11 @@ const start = (cmd, argsOrOptions, passedOptions) => {
       finish("closed");
     });
 
+    child.once("exit", (code) => {
+      runContext.result.code = code;
+      finish("exited");
+    });
+
     child.once("error", () => {
       runContext.result.error = true;
       finish("errored");
