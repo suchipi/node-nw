@@ -1,7 +1,5 @@
 "use strict";
-var child_process = require("child_process");
 var path = require("path");
-
 var exiting = require("./exiting");
 var exit = exiting.exit;
 var onExit = exiting.onExit;
@@ -89,12 +87,13 @@ function setupPipeWrenchSockets(target) {
 
 function prepareUserDataDir() {
   var os = require("os");
+  var mkdirp = require("mkdirp");
+  var rimraf = require("rimraf");
 
   var userDataDir = path.join(os.tmpdir(), "node-nw-profile-" + process.pid);
-  child_process.execSync("mkdir -p " + userDataDir); // TODO: cross-platform mkdir -p
+  mkdirp.sync(userDataDir);
   onExit(function() {
-    var rimrafPath = path.resolve(__dirname, path.join("node_modules", ".bin", "rimraf"));
-    child_process.execSync(rimrafPath + " " + userDataDir);
+    rimraf.sync(userDataDir);
   });
 
   return userDataDir;
@@ -113,6 +112,7 @@ function determineEnvConfig(cwd) {
 }
 
 function startNw(envConfig, userDataDir, argv) {
+  var child_process = require("child_process");
   var shellEscape = require("shell-escape");
 
   var nw = child_process.spawn(

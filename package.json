@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/suchipi/node-nw#readme",
   "dependencies": {
+    "mkdirp": "^0.5.1",
     "pipe-wrench": "^1.0.0",
     "rimraf": "^2.5.4",
     "shell-escape": "^0.2.0",
