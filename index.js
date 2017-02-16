@@ -115,11 +115,23 @@ function startNw(envConfig, userDataDir, argv) {
   var child_process = require("child_process");
   var shellEscape = require("shell-escape");
 
+  function escape(arg) {
+    if (process.platform === "win32") {
+      if (arg.indexOf(' ') !== -1) {
+        return "\"" + arg + "\"";
+      } else {
+        return arg;
+      }
+    } else {
+      return shellEscape([userDataDir]);
+    }
+  }
+
   var nw = child_process.spawn(
     "nw",
     [
       path.resolve(path.join(__dirname, "node-nw")),
-      "--user-data-dir=" + shellEscape([userDataDir]),
+      "--user-data-dir=" + escape(userDataDir),
       JSON.stringify(envConfig),
     ].concat(argv),
     { stdio: "inherit" }
