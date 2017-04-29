@@ -111,7 +111,7 @@ function determineEnvConfig(cwd) {
   };
 }
 
-function startNw(envConfig, userDataDir, argv) {
+function startNw(binary, envConfig, userDataDir, argv) {
   var child_process = require("child_process");
   var shellEscape = require("shell-escape");
 
@@ -128,7 +128,7 @@ function startNw(envConfig, userDataDir, argv) {
   }
 
   var nw = child_process.spawn(
-    "nw",
+    binary,
     [
       path.resolve(path.join(__dirname, "node-nw")),
       "--user-data-dir=" + escape(userDataDir),
@@ -191,14 +191,14 @@ function handleExit() {
   });
 }
 
-module.exports = function nodeNw(cwd, argv) {
+module.exports = function nodeNw(binary, cwd, argv) {
   var target = determineTarget(argv);
   var shouldExit = handleNodeOnlyTargets(target);
   if (!shouldExit) {
     setupPipeWrenchSockets(target);
     var userDataDir = prepareUserDataDir();
     var envConfig = determineEnvConfig(cwd);
-    startNw(envConfig, userDataDir, argv);
+    startNw(binary, envConfig, userDataDir, argv);
     handleExit();
   }
 }

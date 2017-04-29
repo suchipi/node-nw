@@ -1,14 +1,20 @@
 #!/usr/bin/env node
 "use strict";
 
-var inPath = require("./inPath");
 var nodeNw = require("./index");
 
-if (process.platform === "win32" ? inPath("nw.exe") : inPath("nw")) {
-  nodeNw(process.cwd(), process.argv.slice(2));
+var platform;
+if (process.platform === "win32") {
+  platform = require("./platforms/win32");
+} else if (process.platform === "darwin") {
+  platform = require("./platforms/darwin");
 } else {
-  console.error("You need to have the 'nw' binary installed and in your PATH to use node-nw.");
-  console.error("You can download it from https://nwjs.io/.");
-  console.error("The 'SDK' build flavor is required for DevTools support.");
+  platform = require("./platforms/unix");
+}
+
+if (platform.nwjsIsInstalled()) {
+  nodeNw(platform.nwjsBinary(), process.cwd(), process.argv.slice(2));
+} else {
+  console.error(platform.installationInstructions());
   process.exit(1);
 }
