@@ -1,3 +1,4 @@
+"use strict";
 var util = require("util");
 
 // It's not safe to try to inspect any of Chrome's Private APIs;

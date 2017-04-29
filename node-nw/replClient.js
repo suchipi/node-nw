@@ -1,3 +1,4 @@
+"use strict";
 var vm = require("vm");
 var util = require("util");
 
