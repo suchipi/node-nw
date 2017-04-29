@@ -14,11 +14,11 @@ describe("require", () => {
     "argv.js": (scriptPath) => {
       it("passes argv", async () => {
         const run = runCLI([scriptPath, "one", "two"]);
-        await run.outputContains(/\[.*\]/);
+        await run.outputContains(/one/);
         run.kill();
         const argv = JSON.parse(run.result.stdout);
         expect(argv).toEqual([
-          expect.stringMatching(/nw(?:\.exe)?$/),
+          expect.stringMatching(/nw$|nw\.exe$|nwjs\.app/),
           scriptPath,
           "one",
           "two",

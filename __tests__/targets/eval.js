@@ -20,10 +20,10 @@ describe("eval", () => {
       it("passes argv through", async () => {
         const script = "console.log(JSON.stringify(process.argv))";
         const run = runCLI([flag, script, "foo", "bar"]);
-        await run.outputContains(/\[.*\]/);
+        await run.outputContains(/foo/);
         run.kill();
         const argv = JSON.parse(run.result.stdout);
-        expect(argv[0]).toMatch(/nw(?:\.exe)?$/);
+        expect(argv[0]).toMatch(/nw$|nw\.exe$|nwjs\.app/);
         expect(argv[1]).toBe(flag);
         expect(argv[2]).toBe(script);
         expect(argv[3]).toBe("foo");
