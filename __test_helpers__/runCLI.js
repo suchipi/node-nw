@@ -1,8 +1,8 @@
 import path from "path";
-import start from "./start";
+import { spawn } from "first-base";
 
 const bin = path.resolve(__dirname, "..", "server", "bin.js");
 const runCLI = (args = [], options = {}) =>
-  start("node", [bin, ...args], options);
+  spawn("node", [bin, ...args], options);
 
 export default runCLI;
