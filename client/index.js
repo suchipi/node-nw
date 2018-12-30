@@ -1,10 +1,8 @@
 "use strict";
 require("./setup");
 
-const argv = require("../shared/argv");
-const replClient = require("./replClient");
-
-const [target, arg] = argv.target(process.argv.slice(1), process.stdin.isTTY);
+const { getTarget } = require("../shared/argv");
+const [target, arg] = getTarget(process.argv.slice(1), process.stdin.isTTY);
 
 switch (target) {
   case "eval": {
@@ -16,6 +14,7 @@ switch (target) {
     break;
   }
   case "repl": {
+    const replClient = require("./replClient");
     replClient.start();
     break;
   }

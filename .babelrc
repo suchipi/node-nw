@@ -1,13 +1,13 @@
 {
   "presets": [
-      ["env", {
-      "targets": {
-        "node": "current"
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current"
+        }
       }
-    }]
-],
-  "plugins": [
-    "syntax-object-rest-spread",
-    "transform-object-rest-spread"
-  ]
+    ]
+  ],
+  "plugins": ["syntax-object-rest-spread", "transform-object-rest-spread"]
 }

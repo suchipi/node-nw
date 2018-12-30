@@ -2,7 +2,7 @@
 const path = require("path");
 const yargsParser = require("yargs-parser");
 
-function target(argv, stdinIsTTY) {
+function getTarget(argv, stdinIsTTY) {
   const config = yargsParser(argv, {
     alias: {
       version: ["v"],
@@ -32,5 +32,5 @@ function target(argv, stdinIsTTY) {
 }
 
 module.exports = {
-  target,
+  getTarget,
 };
