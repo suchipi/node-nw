@@ -1,27 +1,16 @@
 "use strict";
-var fs = require("fs");
-var path = require("path");
+const fs = require("fs");
+const path = require("path");
 
-var pathSeparator;
-if (process.platform === "win32") {
-  pathSeparator = ";";
-} else {
-  pathSeparator = ":";
-}
+const pathSeparator = process.platform === "win32" ? ";" : ":";
 
 module.exports = function inPath(executableName) {
-  return process.env.PATH.split(pathSeparator).reduce(function(
-    found,
-    pathComponent
-  ) {
-    if (found) return true;
-
-    var executablePath = path.join(pathComponent, executableName);
+  const pathComponents = process.env.PATH.split(pathSeparator);
+  for (const pathComponent of pathComponents) {
+    const executablePath = path.join(pathComponent, executableName);
     if (fs.existsSync(executablePath)) {
       return true;
-    } else {
-      return false;
     }
-  },
-  false);
+  }
+  return false;
 };

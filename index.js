@@ -1,23 +1,23 @@
 "use strict";
-var path = require("path");
-var exiting = require("./exiting");
-var exit = exiting.exit;
-var onExit = exiting.onExit;
+const path = require("path");
+const exiting = require("./exiting");
+const exit = exiting.exit;
+const onExit = exiting.onExit;
 
 function determineTarget(argv) {
-  var argvTarget = require("./node-nw/argv").target;
+  const argvTarget = require("./node-nw/argv").target;
   return argvTarget(argv, process.stdin.isTTY)[0];
 }
 
 function handleNodeOnlyTargets(target) {
-  var shouldExit = false;
+  let shouldExit = false;
   if (target === "version") {
-    var version = require("./package.json").version;
+    const version = require("./package.json").version;
     console.log("v" + version);
     shouldExit = true;
   }
   if (target === "help") {
-    var helpText = require("./help");
+    const helpText = require("./help");
     console.log(helpText);
     shouldExit = true;
   }
@@ -25,14 +25,14 @@ function handleNodeOnlyTargets(target) {
 }
 
 function setupPipeWrenchSockets(target) {
-  var pipeWrench = require("pipe-wrench");
-  var pipeWrenchIdentifiers = require("./pipeWrenchIdentifiers");
-  var ipc = require("./ipc");
-  var replServer = require("./replServer");
+  const pipeWrench = require("pipe-wrench");
+  const pipeWrenchIdentifiers = require("./pipeWrenchIdentifiers");
+  const ipc = require("./ipc");
+  const replServer = require("./replServer");
 
-  var identifiers = pipeWrenchIdentifiers(process.pid);
+  const identifiers = pipeWrenchIdentifiers(process.pid);
 
-  var cleanupStdout = pipeWrench.server(identifiers.stdout, function(socket) {
+  const cleanupStdout = pipeWrench.server(identifiers.stdout, function(socket) {
     socket.pipe(process.stdout);
     onExit(function() {
       socket.end();
@@ -40,7 +40,7 @@ function setupPipeWrenchSockets(target) {
     });
   });
 
-  var cleanupStderr = pipeWrench.server(identifiers.stderr, function(socket) {
+  const cleanupStderr = pipeWrench.server(identifiers.stderr, function(socket) {
     socket.pipe(process.stderr);
     onExit(function() {
       socket.end();
@@ -48,7 +48,7 @@ function setupPipeWrenchSockets(target) {
     });
   });
 
-  var cleanupStdin = pipeWrench.server(identifiers.stdin, function(socket) {
+  const cleanupStdin = pipeWrench.server(identifiers.stdin, function(socket) {
     process.stdin.pipe(socket);
     onExit(function() {
       socket.end();
@@ -56,7 +56,7 @@ function setupPipeWrenchSockets(target) {
     });
   });
 
-  var cleanupIpc = pipeWrench.server(identifiers.ipc, function(socket) {
+  const cleanupIpc = pipeWrench.server(identifiers.ipc, function(socket) {
     socket.setEncoding("utf-8");
     ipc.setSocket(socket);
     onExit(function() {
@@ -65,7 +65,7 @@ function setupPipeWrenchSockets(target) {
     });
   });
 
-  var cleanupRepl = pipeWrench.server(identifiers.repl, function(socket) {
+  const cleanupRepl = pipeWrench.server(identifiers.repl, function(socket) {
     socket.setEncoding("utf-8");
     if (target === "repl") {
       replServer.start(socket);
@@ -86,11 +86,11 @@ function setupPipeWrenchSockets(target) {
 }
 
 function prepareUserDataDir() {
-  var os = require("os");
-  var mkdirp = require("mkdirp");
-  var rimraf = require("rimraf");
+  const os = require("os");
+  const mkdirp = require("mkdirp");
+  const rimraf = require("rimraf");
 
-  var userDataDir = path.join(os.tmpdir(), "node-nw-profile-" + process.pid);
+  const userDataDir = path.join(os.tmpdir(), "node-nw-profile-" + process.pid);
   mkdirp.sync(userDataDir);
   onExit(function() {
     rimraf.sync(userDataDir);
@@ -100,7 +100,7 @@ function prepareUserDataDir() {
 }
 
 function determineEnvConfig(cwd) {
-  var supportsColor = require("supports-color");
+  const supportsColor = require("supports-color");
 
   return {
     cwd: cwd,
@@ -112,8 +112,8 @@ function determineEnvConfig(cwd) {
 }
 
 function startNw(binary, envConfig, userDataDir, argv) {
-  var child_process = require("child_process");
-  var shellEscape = require("shell-escape");
+  const child_process = require("child_process");
+  const shellEscape = require("shell-escape");
 
   function escape(arg) {
     if (process.platform === "win32") {
@@ -127,7 +127,7 @@ function startNw(binary, envConfig, userDataDir, argv) {
     }
   }
 
-  var nw = child_process.spawn(
+  const nw = child_process.spawn(
     binary,
     [
       path.resolve(path.join(__dirname, "node-nw")),
@@ -137,7 +137,7 @@ function startNw(binary, envConfig, userDataDir, argv) {
     { stdio: "inherit" }
   );
 
-  var running = true;
+  let running = true;
   onExit(function() {
     if (running) {
       nw.kill();
@@ -165,7 +165,7 @@ function startNw(binary, envConfig, userDataDir, argv) {
 
 function handleExit() {
   if (process.platform === "win32") {
-    var readline = require("readline").createInterface({
+    const readline = require("readline").createInterface({
       input: process.stdin,
     });
 
@@ -192,12 +192,12 @@ function handleExit() {
 }
 
 module.exports = function nodeNw(binary, cwd, argv) {
-  var target = determineTarget(argv);
-  var shouldExit = handleNodeOnlyTargets(target);
+  const target = determineTarget(argv);
+  const shouldExit = handleNodeOnlyTargets(target);
   if (!shouldExit) {
     setupPipeWrenchSockets(target);
-    var userDataDir = prepareUserDataDir();
-    var envConfig = determineEnvConfig(cwd);
+    const userDataDir = prepareUserDataDir();
+    const envConfig = determineEnvConfig(cwd);
     startNw(binary, envConfig, userDataDir, argv);
     handleExit();
   }

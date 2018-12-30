@@ -1,9 +1,9 @@
 "use strict";
-var path = require("path");
-var yargsParser = require("yargs-parser");
+const path = require("path");
+const yargsParser = require("yargs-parser");
 
 function target(argv, stdinIsTTY) {
-  var config = yargsParser(argv, {
+  const config = yargsParser(argv, {
     alias: {
       version: ["v"],
       help: ["h"],
@@ -32,5 +32,5 @@ function target(argv, stdinIsTTY) {
 }
 
 module.exports = {
-  target: target,
+  target,
 };

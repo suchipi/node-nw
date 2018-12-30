@@ -1,10 +1,10 @@
 "use strict";
+const Console = require("console").Console;
 
-module.exports = function(stdout, stderr) {
-  var Console = require("console").Console;
-  var devtoolsConsole = global.console;
-  var nodeConsole = new Console(stdout, stderr);
-  var multiPlexConsole = {};
+module.exports = function makeConsole(stdout, stderr) {
+  const devtoolsConsole = global.console;
+  const nodeConsole = new Console(stdout, stderr);
+  const multiPlexConsole = {};
   [
     "assert",
     "dir",
@@ -15,11 +15,12 @@ module.exports = function(stdout, stderr) {
     "timeEnd",
     "trace",
     "warn",
-  ].forEach(function(name) {
+  ].forEach((name) => {
     multiPlexConsole[name] = function() {
       devtoolsConsole[name].apply(devtoolsConsole, arguments);
       nodeConsole[name].apply(nodeConsole, arguments);
     };
+    Object.defineProperty(multiPlexConsole[name], "name", { value: name });
   });
 
   return multiPlexConsole;

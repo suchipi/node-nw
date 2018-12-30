@@ -1,5 +1,5 @@
 "use strict";
-var inPath = require("./helper/inPath");
+const inPath = require("./helper/inPath");
 
 function nwjsBinary() {
   return "nw.exe";
@@ -19,7 +19,7 @@ function installationInstructions() {
 }
 
 module.exports = {
-  nwjsIsInstalled: nwjsIsInstalled,
-  installationInstructions: installationInstructions,
-  nwjsBinary: nwjsBinary,
+  nwjsIsInstalled,
+  installationInstructions,
+  nwjsBinary,
 };

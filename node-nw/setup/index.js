@@ -4,30 +4,29 @@
 nw.Window.get().hide();
 
 // Log uncaught errors to console
-process.on("uncaughtException", function(error) {
+process.on("uncaughtException", function handleUncaughtException(error) {
   console.error(error);
-  process.exit(1);
 });
 
 // We get launched with these arguments:
 // 0: Unrelated --user-data-dir argument that doesn't get filtered out
 // 1: Environment config JSON string
 // ...: process.argv.slice(2) from node
-var envConfig = JSON.parse(nw.App.argv[1]);
-var argv = nw.App.argv.slice(2);
+const envConfig = JSON.parse(nw.App.argv[1]);
+const argv = nw.App.argv.slice(2);
 
 // process.stdout, process.stderr, and process.stdin don't work in nw on Windows,
 // so we use an IPC library to create sockets back to the node process, and then
 // override the properties on process to use those instead.
-var sockets = require("./sockets")(envConfig.pid);
+const sockets = require("./sockets")(envConfig.pid);
 
-var ipc = require("./ipc");
+const ipc = require("./ipc");
 ipc.setSocket(sockets.ipc);
 
 // process.stdin normally has a special setRawMode function on it.
 // This defines that function as one that uses the ipc channel to tell the
 // node process to set raw mode on the "real" process.stdin on its end.
-sockets.stdin.setRawMode = function(bool) {
+sockets.stdin.setRawMode = function setRawMode(bool) {
   if (bool) {
     ipc.send("stdin-raw-mode", true);
     sockets.stdin.isRaw = true;
@@ -47,7 +46,7 @@ sockets.stdin.isTTY = envConfig.stdinIsTTY;
 // Log to node stdout/stderr in addition to browser console
 global.console = require("./console")(sockets.stdout, sockets.stderr);
 
-var replClient = require("../replClient");
+const replClient = require("../replClient");
 replClient.setSocket(sockets.repl);
 replClient.setSupportsColor(envConfig.supportsColor);
 

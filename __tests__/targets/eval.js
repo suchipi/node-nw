@@ -6,14 +6,14 @@ describe("eval", () => {
       it("evals the line", async () => {
         const run = runCLI([flag, "console.log('hi');"]);
         await run.outputContains("hi");
-        run.kill();
+        run.kill(); // TODO: shouldn't have to kill
         expect(run.result.stdout).toBe("hi\n");
       });
 
       it("can access `document`", async () => {
         const run = runCLI([flag, "console.log(document)"]);
         await run.outputContains("HTMLDocument");
-        run.kill();
+        run.kill(); // TODO: shouldn't have to kill
         expect(run.result.stdout).toBe(
           "HTMLDocument { location: [Getter/Setter] }\n"
         );
@@ -23,7 +23,7 @@ describe("eval", () => {
         const script = "console.log(JSON.stringify(process.argv))";
         const run = runCLI([flag, script, "foo", "bar"]);
         await run.outputContains(/foo/);
-        run.kill();
+        run.kill(); // TODO: shouldn't have to kill
         const argv = JSON.parse(run.result.stdout);
         expect(argv[0]).toMatch(/nw$|nw\.exe$|nwjs\.app/);
         expect(argv[1]).toBe(flag);

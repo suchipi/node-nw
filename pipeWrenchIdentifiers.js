@@ -1,4 +1,4 @@
-module.exports = function(pid) {
+module.exports = function pipeWrenchIdentifiers(pid) {
   return {
     stdout: "node-nw-stdout-" + pid,
     stderr: "node-nw-stderr-" + pid,

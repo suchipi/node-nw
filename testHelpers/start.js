@@ -1,4 +1,3 @@
-/* eslint-env es6 */
 import { spawn as normalSpawn } from "child_process";
 import { spawn as ptySpawn } from "node-pty";
 import stripAnsi from "strip-ansi";

@@ -1,31 +1,32 @@
-var repl = require("repl");
-var ipc = require("./ipc");
+const repl = require("repl");
+const ipc = require("./ipc");
 
 function start(socket) {
-  var replServer = repl.start({
+  const replServer = repl.start({
     useGlobal: true,
-    writer: function(output) {
-      return output;
-    },
-    eval: function(cmd, context, filename, callback) {
+    writer: (output) => output,
+    eval(cmd, context, filename, callback) {
       if (cmd === "\n") {
         callback("");
         return;
       }
       socket.write(cmd);
-      socket.once("data", function(data) {
+      socket.once("data", (data) => {
+        // TODO: collect data split across multiple "data" events and don't callback until all are sent
+        // (long console.log of util inspect is truncated).
+        // Maybe debounce 0 is good enough?
         callback(data);
       });
     },
   });
 
-  replServer.on("close", function() {
+  replServer.on("close", () => {
     process.exit(0);
   });
 
   replServer.defineCommand("devtools", {
     help: "Open Chromium DevTools",
-    action: function() {
+    action() {
       this.lineParser.reset();
       this.bufferedCommand = "";
       ipc.send("open-devtools");
@@ -35,5 +36,5 @@ function start(socket) {
 }
 
 module.exports = {
-  start: start,
+  start,
 };

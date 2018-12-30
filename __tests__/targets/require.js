@@ -7,7 +7,7 @@ describe("require", () => {
       it("requires the file", async () => {
         const run = runCLI([scriptPath]);
         await run.outputContains("loaded");
-        run.kill();
+        run.kill(); // TODO: shouldn't have to kill
         expect(run.result.stdout).toEqual("loaded\n");
       });
     },
@@ -15,7 +15,7 @@ describe("require", () => {
       it("passes argv", async () => {
         const run = runCLI([scriptPath, "one", "two"]);
         await run.outputContains(/one/);
-        run.kill();
+        run.kill(); // TODO: shouldn't have to kill
         const argv = JSON.parse(run.result.stdout);
         expect(argv).toEqual([
           expect.stringMatching(/nw$|nw\.exe$|nwjs\.app/),
@@ -32,6 +32,7 @@ describe("require", () => {
       });
 
       describe("with a relative path starting with a dot", () => {
+        // TODO: path.join strips the leading dot here
         testsFn(path.join(".", "testHelpers", "fixtures", scriptFile));
       });
 

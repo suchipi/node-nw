@@ -1,16 +1,14 @@
 #!/usr/bin/env node
 "use strict";
 
-var nodeNw = require("./index");
+const nodeNw = require("./index");
 
-var platform;
-if (process.platform === "win32") {
-  platform = require("./platforms/win32");
-} else if (process.platform === "darwin") {
-  platform = require("./platforms/darwin");
-} else {
-  platform = require("./platforms/unix");
-}
+const platform =
+  process.platform === "win32"
+    ? require("./platforms/win32")
+    : process.platform === "darwin"
+    ? require("./platforms/darwin")
+    : require("./platforms/unix");
 
 if (platform.nwjsIsInstalled()) {
   nodeNw(platform.nwjsBinary(), process.cwd(), process.argv.slice(2));

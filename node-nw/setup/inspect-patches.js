@@ -1,5 +1,5 @@
 "use strict";
-var util = require("util");
+const util = require("util");
 
 // It's not safe to try to inspect any of Chrome's Private APIs;
 // some of them blow up because they try to use an internal
@@ -7,8 +7,8 @@ var util = require("util");
 // call it with the wrong arguments.
 function patchChrome(chrome) {
   function customInspect(recurseTimes, options) {
-    var publicAPI = {};
-    for (var key in this) {
+    const publicAPI = {};
+    for (const key in this) {
       if (key.indexOf("Private") === -1) {
         publicAPI[key] = this[key];
       }

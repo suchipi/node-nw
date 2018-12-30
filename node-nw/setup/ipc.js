@@ -1,8 +1,8 @@
 "use strict";
-var makeIpc = require("../../makeIpc");
+const makeIpc = require("../../makeIpc");
 
 module.exports = makeIpc({
-  "open-devtools": function() {
+  "open-devtools"() {
     nw.Window.get().showDevTools();
   },
 });

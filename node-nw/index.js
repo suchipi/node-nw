@@ -1,21 +1,22 @@
 "use strict";
 require("./setup");
 
-var argv = require("./argv");
-var replClient = require("./replClient");
+const argv = require("./argv");
+const replClient = require("./replClient");
 
-var executionTarget = argv.target(process.argv.slice(1), process.stdin.isTTY);
-var target = executionTarget[0];
-var arg = executionTarget[1];
+const [target, arg] = argv.target(process.argv.slice(1), process.stdin.isTTY);
 
-({
-  eval: function() {
+switch (target) {
+  case "eval": {
     eval(arg);
-  },
-  require: function() {
+    break;
+  }
+  case "require": {
     require(arg);
-  },
-  repl: function() {
+    break;
+  }
+  case "repl": {
     replClient.start();
-  },
-}[target]());
+    break;
+  }
+}

@@ -1,5 +1,5 @@
 "use strict";
-var fs = require("fs");
+const fs = require("fs");
 
 function nwjsBinary() {
   return "/Applications/nwjs.app/Contents/MacOS/nwjs";
@@ -19,7 +19,7 @@ function installationInstructions() {
 }
 
 module.exports = {
-  nwjsIsInstalled: nwjsIsInstalled,
-  installationInstructions: installationInstructions,
-  nwjsBinary: nwjsBinary,
+  nwjsIsInstalled,
+  installationInstructions,
+  nwjsBinary,
 };

@@ -1,21 +1,21 @@
 "use strict";
-var pipeWrench = require("pipe-wrench");
-var pipeWrenchIdentifiers = require("../../pipeWrenchIdentifiers");
+const pipeWrench = require("pipe-wrench");
+const pipeWrenchIdentifiers = require("../../pipeWrenchIdentifiers");
 
 module.exports = function setupSockets(pid) {
-  var identifiers = pipeWrenchIdentifiers(pid);
+  const identifiers = pipeWrenchIdentifiers(pid);
 
-  var stdout = pipeWrench.client(identifiers.stdout);
-  var stderr = pipeWrench.client(identifiers.stderr);
-  var stdin = pipeWrench.client(identifiers.stdin);
-  var ipc = pipeWrench.client(identifiers.ipc);
-  var repl = pipeWrench.client(identifiers.repl);
+  const stdout = pipeWrench.client(identifiers.stdout);
+  const stderr = pipeWrench.client(identifiers.stderr);
+  const stdin = pipeWrench.client(identifiers.stdin);
+  const ipc = pipeWrench.client(identifiers.ipc);
+  const repl = pipeWrench.client(identifiers.repl);
 
   return {
-    stdout: stdout,
-    stderr: stderr,
-    stdin: stdin,
-    ipc: ipc,
-    repl: repl,
+    stdout,
+    stderr,
+    stdin,
+    ipc,
+    repl,
   };
 };

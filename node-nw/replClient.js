@@ -1,14 +1,13 @@
 "use strict";
-var vm = require("vm");
-var util = require("util");
+const vm = require("vm");
+const util = require("util");
 
-var repl;
-var supportsColor;
-
+let repl;
 function setSocket(socket) {
   repl = socket;
 }
 
+let supportsColor;
 function setSupportsColor(bool) {
   supportsColor = bool;
 }
@@ -16,7 +15,7 @@ function setSupportsColor(bool) {
 function start() {
   repl.setEncoding("utf-8");
   repl.on("data", function(data) {
-    var result;
+    let result;
     try {
       result = vm.runInThisContext(data, { filename: "repl" });
     } catch (error) {
@@ -32,7 +31,7 @@ function start() {
 }
 
 module.exports = {
-  setSocket: setSocket,
-  setSupportsColor: setSupportsColor,
-  start: start,
+  setSocket,
+  setSupportsColor,
+  start,
 };

@@ -1,7 +1,7 @@
 var makeIpc = require("./makeIpc");
 
 module.exports = makeIpc({
-  "stdin-raw-mode": function(value) {
+  "stdin-raw-mode"(value) {
     process.stdin.setRawMode(value);
   },
 });
