@@ -3,15 +3,16 @@
 const callbacks = [];
 
 function onExit(callback) {
-  callbacks.push(callback);
+  callbacks.unshift(callback);
 }
 
 let exiting = false;
 async function exit(code) {
   if (exiting) {
     return;
-  } // guard against multiple exit requests
+  }
   exiting = true;
+
   for (const callback of callbacks) {
     try {
       await callback();

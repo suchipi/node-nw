@@ -32,20 +32,24 @@ module.exports = function startNw(binary, envConfig, userDataDir, argv) {
   const nw = child_process.spawn(...spawnArgs);
 
   let running = true;
-  onExit(function() {
+  onExit(() => {
     if (running) {
       debug("Killing NW.js process");
-      nw.kill();
+      nw.kill("SIGKILL");
       nw.unref();
+    } else {
+      debug("Exit was called, but the process is already exiting; ignoring");
     }
   });
 
   nw.once("close", (code) => {
+    debug("NW.js process closed, %o", code);
     running = false;
     exit();
   });
 
   nw.once("exit", (code) => {
+    debug("NW.js process exited, %o", code);
     running = false;
     exit();
   });

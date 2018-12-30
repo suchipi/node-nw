@@ -1,10 +1,8 @@
 "use strict";
-const debug = require("debug")("node-nw:client:setup");
-
-// Hide the main window
-// nw.Window.get().hide();
+const debug = require("debug")("node-nw:client/setup/index");
 
 // Log uncaught errors to console
+debug("Registering uncaught exception handler");
 process.on("uncaughtException", function handleUncaughtException(error) {
   console.error(error);
 });
@@ -14,9 +12,7 @@ process.on("uncaughtException", function handleUncaughtException(error) {
 // 1: Environment config JSON string
 // ...: process.argv.slice(2) from node
 const envConfig = JSON.parse(nw.App.argv[1]);
-debug("Env config: %o", envConfig);
 const argv = nw.App.argv.slice(2);
-debug("argv: %o", argv);
 
 // process.stdout, process.stderr, and process.stdin don't work in nw on Windows,
 // so we use an IPC library to create sockets back to the node process, and then
@@ -30,6 +26,7 @@ ipc.setSocket(sockets.ipc);
 // This defines that function as one that uses the ipc channel to tell the
 // node process to set raw mode on the "real" process.stdin on its end.
 sockets.stdin.setRawMode = function setRawMode(bool) {
+  debug(`Client called setRawMode(${bool})`);
   if (bool) {
     ipc.send("stdin-raw-mode", true);
     sockets.stdin.isRaw = true;
@@ -56,6 +53,9 @@ replClient.setSupportsColor(envConfig.supportsColor);
 Object.defineProperty(process, "stdout", { value: sockets.stdout });
 Object.defineProperty(process, "stderr", { value: sockets.stderr });
 Object.defineProperty(process, "stdin", { value: sockets.stdin });
+
+debug("Env config: %o", envConfig);
+debug("argv: %o", argv);
 
 // Set process.cwd() to what it was in node
 process.chdir(envConfig.cwd);

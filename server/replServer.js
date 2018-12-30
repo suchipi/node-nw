@@ -1,5 +1,6 @@
 const repl = require("repl");
 const ipc = require("./ipc");
+const { exit } = require("./exiting");
 
 function start(socket) {
   const replServer = repl.start({
@@ -21,14 +22,12 @@ function start(socket) {
   });
 
   replServer.on("close", () => {
-    process.exit(0);
+    exit();
   });
 
   replServer.defineCommand("devtools", {
     help: "Open Chromium DevTools",
     action() {
-      this.lineParser.reset();
-      this.bufferedCommand = "";
       ipc.send("open-devtools");
       this.displayPrompt();
     },

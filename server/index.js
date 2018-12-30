@@ -1,5 +1,6 @@
 "use strict";
 const path = require("path");
+const debug = require("debug")("node-nw:server/index");
 const { exit, onExit } = require("./exiting");
 const startNw = require("./startNw");
 
@@ -33,7 +34,8 @@ function setupPipeWrenchSockets(target) {
 
   const cleanupStdout = pipeWrench.server(identifiers.stdout, function(socket) {
     socket.pipe(process.stdout);
-    onExit(function() {
+    onExit(() => {
+      debug("Closing and unreffing stdout socket");
       socket.end();
       socket.unref();
     });
@@ -41,7 +43,8 @@ function setupPipeWrenchSockets(target) {
 
   const cleanupStderr = pipeWrench.server(identifiers.stderr, function(socket) {
     socket.pipe(process.stderr);
-    onExit(function() {
+    onExit(() => {
+      debug("Closing and unreffing stderr socket");
       socket.end();
       socket.unref();
     });
@@ -49,7 +52,8 @@ function setupPipeWrenchSockets(target) {
 
   const cleanupStdin = pipeWrench.server(identifiers.stdin, function(socket) {
     process.stdin.pipe(socket);
-    onExit(function() {
+    onExit(() => {
+      debug("Closing and unreffing stdin socket");
       socket.end();
       socket.unref();
     });
@@ -58,7 +62,8 @@ function setupPipeWrenchSockets(target) {
   const cleanupIpc = pipeWrench.server(identifiers.ipc, function(socket) {
     socket.setEncoding("utf-8");
     ipc.setSocket(socket);
-    onExit(function() {
+    onExit(() => {
+      debug("Closing and unreffing ipc socket");
       socket.end();
       socket.unref();
     });
@@ -69,13 +74,15 @@ function setupPipeWrenchSockets(target) {
     if (target === "repl") {
       replServer.start(socket);
     }
-    onExit(function() {
+    onExit(() => {
+      debug("Closing and unreffing repl socket");
       socket.end();
       socket.unref();
     });
   });
 
-  onExit(function() {
+  onExit(() => {
+    debug("Cleaning up pipe-wrench sockets");
     cleanupStdout();
     cleanupStderr();
     cleanupStdin();
@@ -90,8 +97,10 @@ function prepareUserDataDir() {
   const rimraf = require("rimraf");
 
   const userDataDir = path.join(os.tmpdir(), "node-nw-profile-" + process.pid);
+  debug(`Creating user data dir (${userDataDir})`);
   mkdirp.sync(userDataDir);
-  onExit(function() {
+  onExit(() => {
+    debug(`Removing user data dir (${userDataDir})`);
     rimraf.sync(userDataDir);
   });
 
@@ -101,39 +110,48 @@ function prepareUserDataDir() {
 function determineEnvConfig(cwd) {
   const supportsColor = require("supports-color");
 
-  return {
-    cwd: cwd,
+  const envConfig = {
+    cwd,
     pid: process.pid,
     supportsColor: Boolean(supportsColor),
     stdinIsTTY: Boolean(process.stdin.isTTY),
     stdoutIsTTY: Boolean(process.stdout.isTTY),
   };
+
+  debug("envConfig: %o", envConfig);
+
+  return envConfig;
 }
 
 function handleExit() {
   if (process.platform === "win32") {
+    debug("Registering readline interface for SIGINT handler");
     const readline = require("readline").createInterface({
       input: process.stdin,
     });
 
-    readline.on("SIGINT", function() {
+    readline.on("SIGINT", () => {
       process.emit("SIGINT");
     });
   }
 
-  process.on("SIGINT", function() {
+  process.on("SIGINT", () => {
+    debug("Received SIGINT");
     exit();
   });
 
-  process.on("SIGTERM", function() {
+  process.on("SIGTERM", () => {
+    debug("Received SIGTERM");
     exit();
   });
 
-  process.on("SIGHUP", function() {
+  process.on("SIGHUP", () => {
+    debug("Received SIGHUP");
     exit();
   });
 
-  process.on("exit", function(code) {
+  process.on("exit", (code) => {
+    debug(`process.exit was called with code: ${code}`);
     exit(code);
   });
 }
