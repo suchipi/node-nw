@@ -15,7 +15,7 @@ function start(socket) {
         // TODO: collect data split across multiple "data" events and don't callback until all are sent
         // (long console.log of util inspect is truncated).
         // Maybe debounce 0 is good enough?
-        callback(data);
+        callback(null, data);
       });
     },
   });
