@@ -3,7 +3,7 @@ import stripAnsi from "strip-ansi";
 
 describe("repl", () => {
   let pty;
-  const runRepl = () => runCLI(["-i"], { pty: pty });
+  const runRepl = () => runCLI(["-i"], { pty });
   beforeEach(() => {
     pty = true;
   });

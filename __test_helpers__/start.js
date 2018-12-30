@@ -31,8 +31,15 @@ const start = (cmd, argsOrOptions, passedOptions) => {
   let unreffable;
   let running;
 
+  let debug = false;
   let outputContainsBuffer = "";
   let pendingOutputContainsRequests = new Set();
+
+  const debugLog = (...msg) => {
+    if (debug) {
+      console.log(...msg);
+    }
+  };
 
   const runContext = {
     result: {
@@ -48,10 +55,16 @@ const start = (cmd, argsOrOptions, passedOptions) => {
     // Promise that gets resolved when the child process completes.
     completion: null,
 
+    debug() {
+      debug = true;
+      return this;
+    },
+
     // Returns a Promise that resolves once the child process output
     // (combined stdout and stderr) contains the passed string or
     // matches the passed RegExp. Ignores ansi control characters.
     outputContains(value) {
+      debugLog(`Waiting for output to contain ${JSON.stringify(value)}...`);
       return new Promise((resolve, reject) => {
         const request = { value };
         request.resolve = () => {
@@ -118,6 +131,7 @@ const start = (cmd, argsOrOptions, passedOptions) => {
   stdout.on("data", (data) => {
     runContext.result.stdout += data;
     outputContainsBuffer += data;
+    debugLog(`STDOUT: ${data.toString()}`);
     checkForPendingOutputRequestsToResolve();
   });
 
@@ -126,12 +140,15 @@ const start = (cmd, argsOrOptions, passedOptions) => {
     stderr.on("data", (data) => {
       runContext.result.stderr += data;
       outputContainsBuffer += data;
+      debugLog(`STDERR: ${data.toString()}`);
       checkForPendingOutputRequestsToResolve();
     });
   }
 
   runContext.completion = new Promise((resolve) => {
     const finish = (reason) => {
+      debugLog(`Process exited: ${reason}`);
+      debugLog(runContext);
       running = false;
       resolve();
       pendingOutputContainsRequests.forEach((request) => {

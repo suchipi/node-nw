@@ -49,7 +49,6 @@ module.exports = function setupPipeWrenchSockets(target) {
   const cleanupRepl = pipeWrench.server(identifiers.repl, function(socket) {
     socket.setEncoding("utf-8");
     if (target === "repl") {
-      // TODO: move this elsewhere
       replServer.start(socket);
     }
     onExit(() => {
