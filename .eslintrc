@@ -1,0 +1,11 @@
+{
+  "extends": ["unobtrusive", "unobtrusive/import"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true
+  },
+  "globals": {
+    "nw": false
+  }
+}

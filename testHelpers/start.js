@@ -1,3 +1,4 @@
+/* eslint-env es6 */
 import { spawn as normalSpawn } from "child_process";
 import { spawn as ptySpawn } from "node-pty";
 import stripAnsi from "strip-ansi";
@@ -11,12 +12,18 @@ const start = (cmd, argsOrOptions, passedOptions) => {
   let options;
   if (Array.isArray(argsOrOptions)) {
     args = argsOrOptions;
-  } else if ((typeof argsOrOptions) === "object") {
+  } else if (typeof argsOrOptions === "object") {
     options = argsOrOptions;
   }
-  if (passedOptions && !options) { options = passedOptions; }
-  if (!args) { args = []; }
-  if (!options) { options = {}; }
+  if (passedOptions && !options) {
+    options = passedOptions;
+  }
+  if (!args) {
+    args = [];
+  }
+  if (!options) {
+    options = {};
+  }
 
   let child;
   let stdin;
@@ -55,7 +62,7 @@ const start = (cmd, argsOrOptions, passedOptions) => {
         request.reject = () => {
           pendingOutputContainsRequests.delete(request);
           reject();
-        }
+        };
         pendingOutputContainsRequests.add(request);
       });
     },
@@ -129,11 +136,15 @@ const start = (cmd, argsOrOptions, passedOptions) => {
       running = false;
       resolve();
       pendingOutputContainsRequests.forEach((request) => {
-        request.reject(new Error(
-          `Child process ${reason} before its output contained the requested content: ${request.value}`
-        ));
+        request.reject(
+          new Error(
+            `Child process ${reason} before its output contained the requested content: ${
+              request.value
+            }`
+          )
+        );
       });
-    }
+    };
 
     child.once("close", (code) => {
       runContext.result.code = code;

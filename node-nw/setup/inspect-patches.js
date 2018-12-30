@@ -14,7 +14,7 @@ function patchChrome(chrome) {
       }
     }
     return publicAPI;
-  };
+  }
 
   // Prefer the Symbol util.inspect.custom where
   // available, but on old node versions, use "inspect"

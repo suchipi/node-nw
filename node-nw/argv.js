@@ -5,11 +5,11 @@ var yargsParser = require("yargs-parser");
 function target(argv, stdinIsTTY) {
   var config = yargsParser(argv, {
     alias: {
-      "version": ["v"],
-      "help": ["h"],
-      "eval": ["e"],
-      "interactive": ["i"],
-    }
+      version: ["v"],
+      help: ["h"],
+      eval: ["e"],
+      interactive: ["i"],
+    },
   });
 
   if (config.version) {

@@ -11,7 +11,6 @@ module.exports = function setupSockets(pid) {
   var ipc = pipeWrench.client(identifiers.ipc);
   var repl = pipeWrench.client(identifiers.repl);
 
-
   return {
     stdout: stdout,
     stderr: stderr,
@@ -19,4 +18,4 @@ module.exports = function setupSockets(pid) {
     ipc: ipc,
     repl: repl,
   };
-}
+};

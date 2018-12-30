@@ -117,8 +117,8 @@ function startNw(binary, envConfig, userDataDir, argv) {
 
   function escape(arg) {
     if (process.platform === "win32") {
-      if (arg.indexOf(' ') !== -1) {
-        return "\"" + arg + "\"";
+      if (arg.indexOf(" ") !== -1) {
+        return '"' + arg + '"';
       } else {
         return arg;
       }
@@ -201,4 +201,4 @@ module.exports = function nodeNw(binary, cwd, argv) {
     startNw(binary, envConfig, userDataDir, argv);
     handleExit();
   }
-}
+};

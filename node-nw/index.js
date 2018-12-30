@@ -9,13 +9,13 @@ var target = executionTarget[0];
 var arg = executionTarget[1];
 
 ({
-  "eval": function() {
+  eval: function() {
     eval(arg);
   },
-  "require": function() {
+  require: function() {
     require(arg);
   },
-  "repl": function() {
+  repl: function() {
     replClient.start();
   },
-})[target]();
+}[target]());

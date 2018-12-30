@@ -10,10 +10,12 @@ function nwjsIsInstalled() {
 }
 
 function installationInstructions() {
-  return "You need to have the 'nwjs' Application installed and in your " +
+  return (
+    "You need to have the 'nwjs' Application installed and in your " +
     "/Applications folder to use node-nw.\n" +
     "You can download it from https://nwjs.io/.\n" +
-    "The 'SDK' build flavor is required for DevTools support.";
+    "The 'SDK' build flavor is required for DevTools support."
+  );
 }
 
 module.exports = {

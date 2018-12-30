@@ -14,7 +14,9 @@ describe("eval", () => {
         const run = runCLI([flag, "console.log(document)"]);
         await run.outputContains("HTMLDocument");
         run.kill();
-        expect(run.result.stdout).toBe("HTMLDocument { location: [Getter/Setter] }\n");
+        expect(run.result.stdout).toBe(
+          "HTMLDocument { location: [Getter/Setter] }\n"
+        );
       });
 
       it("passes argv through", async () => {

@@ -35,7 +35,7 @@ sockets.stdin.setRawMode = function(bool) {
     ipc.send("stdin-raw-mode", false);
     sockets.stdin.isRaw = false;
   }
-}
+};
 sockets.stdin.isRaw = false;
 
 // process.stdout and process.stdin normally have an `isTTY` boolean

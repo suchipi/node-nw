@@ -24,11 +24,9 @@ describe("require", () => {
           "two",
         ]);
       });
-    }
+    },
   }).forEach(([scriptFile, testsFn]) => {
     describe(scriptFile, () => {
-      let scriptPath;
-
       describe("with a relative path", () => {
         testsFn(path.join("testHelpers", "fixtures", scriptFile));
       });
@@ -38,7 +36,12 @@ describe("require", () => {
       });
 
       describe("with an absolute path", () => {
-        testsFn(path.resolve(__dirname, path.join("..", "..", "testHelpers", "fixtures", scriptFile)));
+        testsFn(
+          path.resolve(
+            __dirname,
+            path.join("..", "..", "testHelpers", "fixtures", scriptFile)
+          )
+        );
       });
     });
   });

@@ -10,7 +10,10 @@ if (process.platform === "win32") {
 }
 
 module.exports = function inPath(executableName) {
-  return process.env.PATH.split(pathSeparator).reduce(function(found, pathComponent) {
+  return process.env.PATH.split(pathSeparator).reduce(function(
+    found,
+    pathComponent
+  ) {
     if (found) return true;
 
     var executablePath = path.join(pathComponent, executableName);
@@ -19,5 +22,6 @@ module.exports = function inPath(executableName) {
     } else {
       return false;
     }
-  }, false);
-}
+  },
+  false);
+};

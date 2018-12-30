@@ -5,5 +5,5 @@ module.exports = [
   "  -v, --version         print node-nw version",
   "  -h, --help            show this help text",
   "  -e, --eval script     evaluate script",
-  "  -i, --interactive     enter REPL"
+  "  -i, --interactive     enter REPL",
 ].join("\n");

@@ -4,7 +4,9 @@ var ipc = require("./ipc");
 function start(socket) {
   var replServer = repl.start({
     useGlobal: true,
-    writer: function(output) { return output; },
+    writer: function(output) {
+      return output;
+    },
     eval: function(cmd, context, filename, callback) {
       if (cmd === "\n") {
         callback("");
@@ -21,16 +23,16 @@ function start(socket) {
     process.exit(0);
   });
 
-  replServer.defineCommand('devtools', {
-    help: 'Open Chromium DevTools',
+  replServer.defineCommand("devtools", {
+    help: "Open Chromium DevTools",
     action: function() {
       this.lineParser.reset();
-      this.bufferedCommand = '';
+      this.bufferedCommand = "";
       ipc.send("open-devtools");
       this.displayPrompt();
-    }
+    },
   });
-};
+}
 
 module.exports = {
   start: start,

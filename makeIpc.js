@@ -25,4 +25,4 @@ module.exports = function makeIpc(receiveHandlers) {
     setSocket: setSocket,
     send: send,
   };
-}
+};
