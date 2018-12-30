@@ -1,4 +1,4 @@
-import runCLI from "../../testHelpers/runCLI";
+import runCLI from "../../__test_helpers__/runCLI";
 const version = require("../../package.json").version;
 
 describe("version", () => {

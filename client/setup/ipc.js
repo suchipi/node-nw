@@ -1,5 +1,5 @@
 "use strict";
-const makeIpc = require("../../makeIpc");
+const makeIpc = require("../../shared/makeIpc");
 
 module.exports = makeIpc({
   "open-devtools"() {

@@ -1,6 +1,6 @@
 "use strict";
 const pipeWrench = require("pipe-wrench");
-const pipeWrenchIdentifiers = require("../../pipeWrenchIdentifiers");
+const pipeWrenchIdentifiers = require("../../shared/pipeWrenchIdentifiers");
 
 module.exports = function setupSockets(pid) {
   const identifiers = pipeWrenchIdentifiers(pid);

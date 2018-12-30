@@ -1,18 +1,17 @@
 "use strict";
 const path = require("path");
-const exiting = require("./exiting");
-const exit = exiting.exit;
-const onExit = exiting.onExit;
+const { exit, onExit } = require("./exiting");
+const startNw = require("./startNw");
 
 function determineTarget(argv) {
-  const argvTarget = require("./node-nw/argv").target;
+  const argvTarget = require("../shared/argv").target;
   return argvTarget(argv, process.stdin.isTTY)[0];
 }
 
 function handleNodeOnlyTargets(target) {
   let shouldExit = false;
   if (target === "version") {
-    const version = require("./package.json").version;
+    const version = require("../package.json").version;
     console.log("v" + version);
     shouldExit = true;
   }
@@ -26,7 +25,7 @@ function handleNodeOnlyTargets(target) {
 
 function setupPipeWrenchSockets(target) {
   const pipeWrench = require("pipe-wrench");
-  const pipeWrenchIdentifiers = require("./pipeWrenchIdentifiers");
+  const pipeWrenchIdentifiers = require("../shared/pipeWrenchIdentifiers");
   const ipc = require("./ipc");
   const replServer = require("./replServer");
 
@@ -109,58 +108,6 @@ function determineEnvConfig(cwd) {
     stdinIsTTY: Boolean(process.stdin.isTTY),
     stdoutIsTTY: Boolean(process.stdout.isTTY),
   };
-}
-
-function startNw(binary, envConfig, userDataDir, argv) {
-  const child_process = require("child_process");
-  const shellEscape = require("shell-escape");
-
-  function escape(arg) {
-    if (process.platform === "win32") {
-      if (arg.indexOf(" ") !== -1) {
-        return '"' + arg + '"';
-      } else {
-        return arg;
-      }
-    } else {
-      return shellEscape([userDataDir]);
-    }
-  }
-
-  const nw = child_process.spawn(
-    binary,
-    [
-      path.resolve(path.join(__dirname, "node-nw")),
-      "--user-data-dir=" + escape(userDataDir),
-      JSON.stringify(envConfig),
-    ].concat(argv),
-    { stdio: "inherit" }
-  );
-
-  let running = true;
-  onExit(function() {
-    if (running) {
-      nw.kill();
-      nw.unref();
-    }
-  });
-
-  nw.once("close", function(code) {
-    running = false;
-    exit();
-  });
-
-  nw.once("exit", function(code) {
-    running = false;
-    exit();
-  });
-
-  nw.once("error", function() {
-    console.error("An error occurred in the child nw process");
-    running = false;
-    process.exitCode = 1;
-    exit();
-  });
 }
 
 function handleExit() {

@@ -1,5 +1,5 @@
-import runCLI from "../../testHelpers/runCLI";
-import helpText from "../../help";
+import runCLI from "../../__test_helpers__/runCLI";
+import helpText from "../../server/help";
 
 describe("help", () => {
   ["--help", "-h"].forEach((flag) => {

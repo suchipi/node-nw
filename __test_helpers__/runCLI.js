@@ -1,7 +1,7 @@
 import path from "path";
 import start from "./start";
 
-const bin = path.resolve(path.join(__dirname, "../bin.js"));
+const bin = path.resolve(__dirname, "..", "server", "bin.js");
 const runCLI = (args = [], options = {}) =>
   start("node", [bin, ...args], options);
 

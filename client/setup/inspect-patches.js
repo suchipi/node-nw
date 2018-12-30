@@ -26,4 +26,3 @@ function patchChrome(chrome) {
 }
 
 patchChrome(window.chrome);
-patchChrome(window.opener.chrome);

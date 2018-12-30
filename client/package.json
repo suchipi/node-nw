@@ -1,0 +1,5 @@
+{
+  "name": "node-nw",
+  "main": "index.js",
+  "chromium-args": "--mixed-context"
+}

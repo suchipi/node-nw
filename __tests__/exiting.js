@@ -1,4 +1,4 @@
-import runCLI from "../testHelpers/runCLI";
+import runCLI from "../__test_helpers__/runCLI";
 
 describe("exiting", () => {
   ["SIGINT", "SIGTERM", "SIGHUP"].forEach((signal) => {

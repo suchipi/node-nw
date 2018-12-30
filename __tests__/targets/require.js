@@ -1,5 +1,5 @@
 import path from "path";
-import runCLI from "../../testHelpers/runCLI";
+import runCLI from "../../__test_helpers__/runCLI";
 
 describe("require", () => {
   Object.entries({
@@ -28,19 +28,19 @@ describe("require", () => {
   }).forEach(([scriptFile, testsFn]) => {
     describe(scriptFile, () => {
       describe("with a relative path", () => {
-        testsFn(path.join("testHelpers", "fixtures", scriptFile));
+        testsFn(path.join("__test_helpers__", "fixtures", scriptFile));
       });
 
       describe("with a relative path starting with a dot", () => {
         // TODO: path.join strips the leading dot here
-        testsFn(path.join(".", "testHelpers", "fixtures", scriptFile));
+        testsFn(path.join(".", "__test_helpers__", "fixtures", scriptFile));
       });
 
       describe("with an absolute path", () => {
         testsFn(
           path.resolve(
             __dirname,
-            path.join("..", "..", "testHelpers", "fixtures", scriptFile)
+            path.join("..", "..", "__test_helpers__", "fixtures", scriptFile)
           )
         );
       });

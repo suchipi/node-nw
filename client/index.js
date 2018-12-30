@@ -1,7 +1,7 @@
 "use strict";
 require("./setup");
 
-const argv = require("./argv");
+const argv = require("../shared/argv");
 const replClient = require("./replClient");
 
 const [target, arg] = argv.target(process.argv.slice(1), process.stdin.isTTY);
