@@ -27,20 +27,26 @@ describe("require", () => {
     },
   }).forEach(([scriptFile, testsFn]) => {
     describe(scriptFile, () => {
+      // Not using path.join because we want to preserve leading `./`
+      const join = (...parts) => parts.join(path.sep);
+
       describe("with a relative path", () => {
-        testsFn(path.join("__test_helpers__", "fixtures", scriptFile));
+        testsFn(join("__test_helpers__", "fixtures", scriptFile));
       });
 
       describe("with a relative path starting with a dot", () => {
-        // TODO: path.join strips the leading dot here
-        testsFn(path.join(".", "__test_helpers__", "fixtures", scriptFile));
+        testsFn(join(".", "__test_helpers__", "fixtures", scriptFile));
       });
 
       describe("with an absolute path", () => {
         testsFn(
           path.resolve(
             __dirname,
-            path.join("..", "..", "__test_helpers__", "fixtures", scriptFile)
+            "..",
+            "..",
+            "__test_helpers__",
+            "fixtures",
+            scriptFile
           )
         );
       });
