@@ -8,16 +8,20 @@ function start(socket) {
     writer: (output) => output,
     eval(cmd, context, filename, callback) {
       if (cmd === "\n") {
-        callback("");
+        callback(null, "");
         return;
       }
+      let dataSoFar = "";
+      function onData(data) {
+        if (data === "---NODE_NW_SOCKET_RESPONSE_END---") {
+          callback(null, dataSoFar);
+          socket.removeListener("data", onData);
+        } else {
+          dataSoFar += data;
+        }
+      }
+      socket.on("data", onData);
       socket.write(cmd);
-      socket.once("data", (data) => {
-        // TODO: collect data split across multiple "data" events and don't callback until all are sent
-        // (long console.log of util inspect is truncated).
-        // Maybe debounce 0 is good enough?
-        callback(null, data);
-      });
     },
   });
 

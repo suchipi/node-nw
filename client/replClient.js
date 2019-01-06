@@ -27,6 +27,7 @@ function start() {
       result = error.stack;
     }
     repl.write(result);
+    repl.write("---NODE_NW_SOCKET_RESPONSE_END---");
   });
 }
 
