@@ -1,6 +1,6 @@
 {
   "name": "node-nw",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "description": "Execute some node script in a headless nw.js instance",
   "main": "index.js",
   "bin": {
