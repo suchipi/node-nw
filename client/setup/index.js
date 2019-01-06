@@ -64,6 +64,26 @@ process.chdir(envConfig.cwd);
 // This fits the same shape node usually has: ["/absolutePathTo/node", ...argv].
 process.argv = [process.argv[0]].concat(argv);
 
+Object.defineProperty(process, "exit", {
+  value: (code) => {
+    ipc.send("set-exit-code", code);
+    // App won't quit if no windows are open; see https://github.com/nwjs/nw.js/issues/4227
+    nw.Window.open("", { show: false });
+    nw.App.quit();
+  },
+});
+
+let _exitCode = 0;
+Object.defineProperty(process, "exitCode", {
+  set(code) {
+    ipc.send("set-exit-code", code);
+    _exitCode = code;
+  },
+  get() {
+    return _exitCode;
+  },
+});
+
 // Some things blow up if you try to inspect them.
 // Patch them so that doesn't happen.
 require("./inspect-patches");
