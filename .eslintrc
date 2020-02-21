@@ -8,5 +8,13 @@
   },
   "globals": {
     "nw": false
-  }
+  },
+  "overrides": [
+    {
+      "files": ["client/**/*.js"],
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ]
 }
