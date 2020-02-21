@@ -31,11 +31,14 @@ module.exports = function startNw(binary, envConfig, userDataDir, argv) {
   debug("Spawning: %o", spawnArgs);
   const nw = child_process.spawn(...spawnArgs);
 
+  let exitedResolve = () => {};
+
   let running = true;
-  onExit(() => {
+  onExit(1, async () => {
     if (running) {
       debug("Killing NW.js process");
       nw.kill("SIGKILL");
+      await new Promise((resolve) => (exitedResolve = resolve));
       nw.unref();
     } else {
       debug("Exit was called, but the process is already exiting; ignoring");
@@ -46,12 +49,14 @@ module.exports = function startNw(binary, envConfig, userDataDir, argv) {
     debug("NW.js process closed, %o", code);
     running = false;
     exit();
+    exitedResolve();
   });
 
   nw.once("exit", (code) => {
     debug("NW.js process exited, %o", code);
     running = false;
     exit();
+    exitedResolve();
   });
 
   nw.once("error", (err) => {

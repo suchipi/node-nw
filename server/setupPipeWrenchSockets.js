@@ -11,7 +11,7 @@ module.exports = function setupPipeWrenchSockets(target) {
 
   const cleanupStdout = pipeWrench.server(identifiers.stdout, function(socket) {
     socket.pipe(process.stdout);
-    onExit(() => {
+    onExit(0, () => {
       debug("Closing and unreffing stdout socket");
       socket.end();
       socket.unref();
@@ -20,7 +20,7 @@ module.exports = function setupPipeWrenchSockets(target) {
 
   const cleanupStderr = pipeWrench.server(identifiers.stderr, function(socket) {
     socket.pipe(process.stderr);
-    onExit(() => {
+    onExit(0, () => {
       debug("Closing and unreffing stderr socket");
       socket.end();
       socket.unref();
@@ -29,7 +29,7 @@ module.exports = function setupPipeWrenchSockets(target) {
 
   const cleanupStdin = pipeWrench.server(identifiers.stdin, function(socket) {
     process.stdin.pipe(socket);
-    onExit(() => {
+    onExit(0, () => {
       debug("Closing and unreffing stdin socket");
       socket.end();
       socket.unref();
@@ -39,7 +39,7 @@ module.exports = function setupPipeWrenchSockets(target) {
   const cleanupIpc = pipeWrench.server(identifiers.ipc, function(socket) {
     socket.setEncoding("utf-8");
     ipc.setSocket(socket);
-    onExit(() => {
+    onExit(0, () => {
       debug("Closing and unreffing ipc socket");
       socket.end();
       socket.unref();
@@ -51,14 +51,14 @@ module.exports = function setupPipeWrenchSockets(target) {
     if (target === "repl") {
       replServer.start(socket);
     }
-    onExit(() => {
+    onExit(0, () => {
       debug("Closing and unreffing repl socket");
       socket.end();
       socket.unref();
     });
   });
 
-  onExit(() => {
+  onExit(0, () => {
     debug("Cleaning up pipe-wrench sockets");
     cleanupStdout();
     cleanupStderr();

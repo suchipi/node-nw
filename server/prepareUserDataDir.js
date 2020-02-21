@@ -11,7 +11,7 @@ module.exports = function prepareUserDataDir() {
   const userDataDir = path.join(os.tmpdir(), "node-nw-profile-" + process.pid);
   debug(`Creating user data dir (${userDataDir})`);
   mkdirp.sync(userDataDir);
-  onExit(() => {
+  onExit(2, () => {
     debug(`Removing user data dir (${userDataDir})`);
     rimraf.sync(userDataDir);
   });

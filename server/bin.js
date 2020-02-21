@@ -1,25 +1,43 @@
 "use strict";
 
 const debug = require("debug")("node-nw:server/bin");
+const path = require("path");
 const nodeNw = require("./index");
 
-let platform;
+let bin;
 if (process.platform === "win32") {
   debug("Platform detected: win32");
-  platform = require("./platforms/win32");
+  bin = path.resolve(
+    __dirname,
+    "..",
+    "binaries",
+    "nwjs-sdk-v0.44.2-win-x64",
+    "nw.exe"
+  );
 } else if (process.platform === "darwin") {
   debug("Platform detected: darwin");
-  platform = require("./platforms/darwin");
+  bin = path.resolve(
+    __dirname,
+    "..",
+    "binaries",
+    "nwjs-sdk-v0.44.2-osx-x64",
+    "nwjs.app",
+    "Contents",
+    "MacOS",
+    "nwjs"
+  );
+} else if (process.platform === "linux") {
+  debug("Platform detected: linux");
+  bin = path.resolve(
+    __dirname,
+    "..",
+    "binaries",
+    "nwjs-sdk-v0.44.2-linux-x64",
+    "nw"
+  );
 } else {
-  debug("Platform detected: unix");
-  platform = require("./platforms/unix");
-}
-
-if (platform.nwjsIsInstalled()) {
-  debug("NW.js is installed");
-  nodeNw(platform.nwjsBinary(), process.cwd(), process.argv.slice(2));
-} else {
-  debug("NW.js not installed");
-  console.error(platform.installationInstructions());
+  console.error("NW.js is not supported on this platform:", process.platform);
   process.exit(1);
 }
+
+nodeNw(bin, process.cwd(), process.argv.slice(2));
