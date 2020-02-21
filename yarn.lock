@@ -918,6 +918,21 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@nwjs-binaries/linux-x64@0.44.2-sdk":
+  version "0.44.2-sdk"
+  resolved "https://registry.yarnpkg.com/@nwjs-binaries/linux-x64/-/linux-x64-0.44.2-sdk.tgz#7219df8385fb4a0a98c414c590cbfa38d27fb413"
+  integrity sha512-k9pbphs10X1jwhPeW5M/yoVpG9/p75b3uClgok/rPaHdIeuJWNS4/BNRx5Y+pbsIoSh7xsRFuZYTNUuvBozklw==
+
+"@nwjs-binaries/osx-x64@0.44.2-sdk":
+  version "0.44.2-sdk"
+  resolved "https://registry.yarnpkg.com/@nwjs-binaries/osx-x64/-/osx-x64-0.44.2-sdk.tgz#e135bc0195fe05e0fecf9e551abf80856e52fee7"
+  integrity sha512-/2ATZeG55ZrAs8aynSoVmKyMHCzwom/uNiuSmf9mGR64kpasV7muVagRVHFUzPRbRrzbxKOll1SXs/6qNavAow==
+
+"@nwjs-binaries/win-x64@0.44.2-sdk":
+  version "0.44.2-sdk"
+  resolved "https://registry.yarnpkg.com/@nwjs-binaries/win-x64/-/win-x64-0.44.2-sdk.tgz#7eb4f63165905b7d5ebfb3202a1991c3cd502ef3"
+  integrity sha512-jZ+JfTgRsEOU6evZOM+EbfmsmJuWDfpljlj0+UHOzAHTtTN3qAnGvh0I87TrA6Gk66dSc8odwqNwQncpLvN8cw==
+
 "@sinonjs/commons@^1.7.0":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.7.1.tgz#da5fd19a5f71177a53778073978873964f49acf1"
@@ -3378,11 +3393,6 @@ nan@2.10.0:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
   integrity sha512-bAdJv7fBLhWC+/Bls0Oza+mvTaNQtP+1RyhhhvD95pgUJz6XM5IzgmxOkItJ9tkoCiplvAnXI1tNmmUD/eScyA==
 
-nan@^2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
-  integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
-
 nanomatch@^1.2.9:
   version "1.2.13"
   resolved "https://registry.yarnpkg.com/nanomatch/-/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
@@ -3437,13 +3447,6 @@ node-pty@^0.8.0:
   integrity sha512-g5ggk3gN4gLrDmAllee5ScFyX3YzpOC/U8VJafha4pE7do0TIE1voiIxEbHSRUOPD1xYqmY+uHhOKAd3avbxGQ==
   dependencies:
     nan "2.10.0"
-
-node-pty@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/node-pty/-/node-pty-0.9.0.tgz#8f9bcc0d1c5b970a3184ffd533d862c7eb6590a6"
-  integrity sha512-MBnCQl83FTYOu7B4xWw10AW77AAh7ThCE1VXEv+JeWj8mSpGo+0bwgsV+b23ljBFwEM9OmsOv3kM27iUPPm84g==
-  dependencies:
-    nan "^2.14.0"
 
 node-releases@^1.1.49:
   version "1.1.49"
