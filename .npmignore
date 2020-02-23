@@ -3,3 +3,5 @@ __test_helpers__
 babel.config.js
 .eslintrc
 .prettierrc
+node_modules_docker
+docker-image
