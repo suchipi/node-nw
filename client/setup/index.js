@@ -66,7 +66,9 @@ process.argv = [process.argv[0]].concat(argv);
 
 Object.defineProperty(process, "exit", {
   value: (code) => {
-    ipc.send("set-exit-code", code);
+    if (code != null) {
+      ipc.send("set-exit-code", code);
+    }
     // App won't quit if no windows are open; see https://github.com/nwjs/nw.js/issues/4227
     nw.Window.open("", { show: false });
     nw.App.quit();
