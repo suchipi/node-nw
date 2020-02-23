@@ -52,9 +52,15 @@ module.exports = function startNw(binary, envConfig, userDataDir, argv) {
     exitedResolve();
   });
 
+  let nwOutput = "";
+
   nw.once("exit", (code) => {
     debug("NW.js process exited, %o", code);
     running = false;
+    if (code !== 0) {
+      console.error(nwOutput);
+      process.exitCode = code;
+    }
     exit();
     exitedResolve();
   });
@@ -68,9 +74,13 @@ module.exports = function startNw(binary, envConfig, userDataDir, argv) {
 
   const nwDebug = require("debug")("node-nw:nw");
   nw.stdout.on("data", (data) => {
+    nwOutput += data;
+
     nwDebug("stdout: %s", data);
   });
   nw.stderr.on("data", (data) => {
+    nwOutput += data;
+
     nwDebug("stderr: %s", data);
   });
 };
