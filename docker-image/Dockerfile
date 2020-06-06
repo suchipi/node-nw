@@ -37,6 +37,6 @@ RUN mkdir -p /usr/local/nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 
 RUN source $NVM_DIR/nvm.sh && nvm install 10
-RUN source $NVM_DIR/nvm.sh && npm install -g yarn
+RUN source $NVM_DIR/nvm.sh && npm install -g pnpm
 
 CMD Xvfb -screen 0 1024x768x16 -ac & bash
