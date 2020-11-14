@@ -13,11 +13,11 @@ devDependencies:
   eslint: 6.8.0
   eslint-config-unobtrusive: 1.2.5_eslint@6.8.0
   eslint-plugin-import: 2.20.2_eslint@6.8.0
-  first-base: 0.1.2
+  first-base: 0.1.3
   jest: 25.5.4
   prettier: 1.19.1
   strip-ansi: 6.0.0
-lockfileVersion: 5.1
+lockfileVersion: 5.2
 optionalDependencies:
   '@nwjs-binaries/linux-x64': 0.44.2-sdk
   '@nwjs-binaries/osx-x64': 0.44.2-sdk
@@ -981,7 +981,7 @@ packages:
       jest-haste-map: 25.5.1
       jest-message-util: 25.5.0
       jest-regex-util: 25.2.6
-      jest-resolve: 25.5.1_jest-resolve@25.5.1
+      jest-resolve: 25.5.1
       jest-resolve-dependencies: 25.5.4
       jest-runner: 25.5.4
       jest-runtime: 25.5.4
@@ -1050,7 +1050,7 @@ packages:
       istanbul-lib-source-maps: 4.0.0
       istanbul-reports: 3.0.2
       jest-haste-map: 25.5.1
-      jest-resolve: 25.5.1_jest-resolve@25.5.1
+      jest-resolve: 25.5.1
       jest-util: 25.5.0
       jest-worker: 25.5.0
       slash: 3.0.0
@@ -2393,13 +2393,13 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==
-  /first-base/0.1.2:
+  /first-base/0.1.3:
     dependencies:
-      node-pty: 0.8.1
+      node-pty: 0.9.0
       strip-ansi: 5.2.0
     dev: true
     resolution:
-      integrity: sha512-iDLRMgVtKDdnhr26vklUcEuSzKHe1b5/wEjEiYvjTC3rVEMWw1suXVHsUOEoDfN/NSf/BHqeJPO2OHuvsUg2Yw==
+      integrity: sha512-B9brsiB+JRNKMcEc8omlhpGCffM27BSGS2DWGl4Hq+hy+GKGLDaVCkNv41KsucZUKXlHRmFGwB7E4ZNf7gxuPA==
   /flat-cache/2.0.1:
     dependencies:
       flatted: 2.0.2
@@ -3068,7 +3068,7 @@ packages:
       jest-get-type: 25.2.6
       jest-jasmine2: 25.5.4
       jest-regex-util: 25.2.6
-      jest-resolve: 25.5.1_jest-resolve@25.5.1
+      jest-resolve: 25.5.1
       jest-util: 25.5.0
       jest-validate: 25.5.0
       micromatch: 4.0.2
@@ -3232,7 +3232,7 @@ packages:
       integrity: sha512-eXWuTV8mKzp/ovHc5+3USJMYsTBhyQ+5A1Mak35dey/RG8GlM4YWVylZuGgVXinaW6tpvk/RSecmF37FKUlpXA==
   /jest-pnp-resolver/1.2.1_jest-resolve@25.5.1:
     dependencies:
-      jest-resolve: 25.5.1_jest-resolve@25.5.1
+      jest-resolve: 25.5.1
     dev: true
     engines:
       node: '>=6'
@@ -3259,7 +3259,7 @@ packages:
       node: '>= 8.3'
     resolution:
       integrity: sha512-yFmbPd+DAQjJQg88HveObcGBA32nqNZ02fjYmtL16t1xw9bAttSn5UGRRhzMHIQbsep7znWvAvnD4kDqOFM0Uw==
-  /jest-resolve/25.5.1_jest-resolve@25.5.1:
+  /jest-resolve/25.5.1:
     dependencies:
       '@jest/types': 25.5.0
       browser-resolve: 1.11.3
@@ -3273,8 +3273,6 @@ packages:
     dev: true
     engines:
       node: '>= 8.3'
-    peerDependencies:
-      jest-resolve: '*'
     resolution:
       integrity: sha512-Hc09hYch5aWdtejsUZhA+vSzcotf7fajSlPA6EZPE1RmPBAD39XtJhvHWFStid58iit4IPDLI/Da4cwdDmAHiQ==
   /jest-runner/25.5.4:
@@ -3292,7 +3290,7 @@ packages:
       jest-jasmine2: 25.5.4
       jest-leak-detector: 25.5.0
       jest-message-util: 25.5.0
-      jest-resolve: 25.5.1_jest-resolve@25.5.1
+      jest-resolve: 25.5.1
       jest-runtime: 25.5.4
       jest-util: 25.5.0
       jest-worker: 25.5.0
@@ -3323,7 +3321,7 @@ packages:
       jest-message-util: 25.5.0
       jest-mock: 25.5.0
       jest-regex-util: 25.2.6
-      jest-resolve: 25.5.1_jest-resolve@25.5.1
+      jest-resolve: 25.5.1
       jest-snapshot: 25.5.1
       jest-util: 25.5.0
       jest-validate: 25.5.0
@@ -3357,7 +3355,7 @@ packages:
       jest-get-type: 25.2.6
       jest-matcher-utils: 25.5.0
       jest-message-util: 25.5.0
-      jest-resolve: 25.5.1_jest-resolve@25.5.1
+      jest-resolve: 25.5.1
       make-dir: 3.1.0
       natural-compare: 1.4.0
       pretty-format: 25.5.0
@@ -3765,10 +3763,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
-  /nan/2.12.1:
+  /nan/2.14.2:
     dev: true
     resolution:
-      integrity: sha512-JY7V6lRkStKcKTvHO5NVSQRv+RV+FIL5pvDoLiAtSL9pKlC5x9PKQcZDsq7m4FO4d57mkhC6Z+QhAh3Jdk5JFw==
+      integrity: sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
   /nanomatch/1.2.13:
     dependencies:
       arr-diff: 4.0.0
@@ -3816,13 +3814,13 @@ packages:
     optional: true
     resolution:
       integrity: sha512-SVfQ/wMw+DesunOm5cKqr6yDcvUTDl/yc97ybGHMrteNEY6oekXpNpS3lZwgLlwz0FLgHoiW28ZpmBHUDg37cw==
-  /node-pty/0.8.1:
+  /node-pty/0.9.0:
     dependencies:
-      nan: 2.12.1
+      nan: 2.14.2
     dev: true
     requiresBuild: true
     resolution:
-      integrity: sha512-j+/g0Q5dR+vkELclpJpz32HcS3O/3EdPSGPvDXJZVJQLCvgG0toEbfmymxAEyQyZEpaoKHAcoL+PvKM+4N9nlw==
+      integrity: sha512-MBnCQl83FTYOu7B4xWw10AW77AAh7ThCE1VXEv+JeWj8mSpGo+0bwgsV+b23ljBFwEM9OmsOv3kM27iUPPm84g==
   /node-releases/1.1.58:
     dev: true
     resolution:
@@ -5372,7 +5370,7 @@ specifiers:
   eslint: ^6.8.0
   eslint-config-unobtrusive: ^1.2.5
   eslint-plugin-import: ^2.20.1
-  first-base: ^0.1.2
+  first-base: ^0.1.3
   jest: ^25.1.0
   mkdirp: ^1.0.3
   pipe-wrench: ^1.0.0
