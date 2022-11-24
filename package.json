@@ -1,6 +1,6 @@
 {
   "name": "node-nw",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Execute some node script in a headless nw.js instance",
   "main": "index.js",
   "bin": {
@@ -35,6 +35,7 @@
   },
   "optionalDependencies": {
     "@nwjs-binaries/osx-x64": "0.61.0-sdk",
+    "@nwjs-binaries/osx-arm64": "0.61.0-sdk",
     "@nwjs-binaries/linux-x64": "0.61.0-sdk",
     "@nwjs-binaries/win-x64": "0.61.0-sdk"
   },
