@@ -9,7 +9,12 @@ if (process.platform === "win32") {
   bin = require("@nwjs-binaries/win-x64");
 } else if (process.platform === "darwin") {
   debug("Platform detected: darwin");
-  bin = require("@nwjs-binaries/osx-x64");
+  if (process.arch === "arm64") {
+    debug("Arch detected: arm64");
+    bin = require("@nwjs-binaries/osx-arm64"); 
+  } else {
+    bin = require("@nwjs-binaries/osx-x64");
+  }
 } else if (process.platform === "linux") {
   debug("Platform detected: linux");
   bin = require("@nwjs-binaries/linux-x64");
