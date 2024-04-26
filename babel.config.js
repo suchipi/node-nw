@@ -6,8 +6,8 @@ module.exports = {
         targets: {
           node: "current",
         },
+        module: "commonjs",
       },
     ],
   ],
-  plugins: ["@babel/plugin-proposal-object-rest-spread"],
 };

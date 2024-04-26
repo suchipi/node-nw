@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import runCLI from "../../__test_helpers__/runCLI";
 import stripAnsi from "strip-ansi";
 

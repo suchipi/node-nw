@@ -75,16 +75,22 @@ Object.defineProperty(process, "exit", {
   },
 });
 
-let _exitCode = 0;
-Object.defineProperty(process, "exitCode", {
-  set(code) {
-    ipc.send("set-exit-code", code);
-    _exitCode = code;
-  },
-  get() {
-    return _exitCode;
-  },
-});
+// TODO: can't override process.exitCode in modern node versions. We'll need to
+// shadow `process` instead.
+try {
+  let _exitCode = 0;
+  Object.defineProperty(process, "exitCode", {
+    set(code) {
+      ipc.send("set-exit-code", code);
+      _exitCode = code;
+    },
+    get() {
+      return _exitCode;
+    },
+  });
+} catch (err) {
+  console.error(err);
+}
 
 // Some things blow up if you try to inspect them.
 // Patch them so that doesn't happen.
