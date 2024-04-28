@@ -1,4 +1,3 @@
-import { describe, it, expect } from "vitest";
 import path from "path";
 import runCLI from "../../__test_helpers__/runCLI";
 
