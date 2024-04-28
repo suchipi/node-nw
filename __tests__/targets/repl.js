@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import runCLI from "../../__test_helpers__/runCLI";
 import stripAnsi from "strip-ansi";
 
