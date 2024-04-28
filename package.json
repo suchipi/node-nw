@@ -31,7 +31,6 @@
     "rimraf": "^5.0.5",
     "shell-escape": "^0.2.0",
     "supports-color": "^8.1.1",
-    "vitest": "^1.5.2",
     "yargs-parser": "^21.1.1"
   },
   "optionalDependencies": {
@@ -53,6 +52,7 @@
     "kame": "^0.13.0",
     "nice-path": "^2.0.0",
     "prettier": "^3.2.5",
-    "strip-ansi": "^6.0.1"
+    "strip-ansi": "^6.0.1",
+    "vitest": "^1.5.2"
   }
 }
