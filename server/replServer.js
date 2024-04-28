@@ -2,6 +2,8 @@ const repl = require("repl");
 const ipc = require("./ipc");
 const { exit } = require("./exiting");
 
+const SOCKET_RESPONSE_END = "---NODE_NW_SOCKET_RESPONSE_END---";
+
 function start(socket) {
   const replServer = repl.start({
     useGlobal: true,
@@ -13,11 +15,14 @@ function start(socket) {
       }
       let dataSoFar = "";
       function onData(data) {
-        if (data === "---NODE_NW_SOCKET_RESPONSE_END---") {
-          callback(null, dataSoFar);
+        dataSoFar += data;
+        if (dataSoFar.endsWith(SOCKET_RESPONSE_END)) {
+          const dataWithoutEnd = dataSoFar.slice(
+            0,
+            -SOCKET_RESPONSE_END.length
+          );
+          callback(null, dataWithoutEnd);
           socket.removeListener("data", onData);
-        } else {
-          dataSoFar += data;
         }
       }
       socket.on("data", onData);
