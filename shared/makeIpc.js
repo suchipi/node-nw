@@ -9,6 +9,7 @@ module.exports = function makeIpc(receiveHandlers) {
   }
 
   function receive(data) {
+    // TODO: handle chunked/interrupted data
     debug(`IPC received: ${data}`);
 
     const commands = data
