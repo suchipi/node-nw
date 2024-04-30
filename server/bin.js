@@ -1,25 +1,31 @@
+#!/usr/bin/env node
 "use strict";
 
 const debug = require("debug")("node-nw:server/bin");
 const nodeNw = require("./index");
 
+const osTag =
+  {
+    darwin: "osx",
+    win32: "win",
+  }[process.platform] || process.platform;
+
+const arch = process.arch;
+
+debug(`Platform/arch: ${osTag}-${arch}`);
+
 let bin;
-if (process.platform === "win32") {
-  debug("Platform detected: win32");
-  bin = require("@nwjs-binaries/win-x64");
-} else if (process.platform === "darwin") {
-  debug("Platform detected: darwin");
-  if (process.arch === "arm64") {
-    debug("Arch detected: arm64");
-    bin = require("@nwjs-binaries/osx-arm64"); 
-  } else {
-    bin = require("@nwjs-binaries/osx-x64");
-  }
-} else if (process.platform === "linux") {
-  debug("Platform detected: linux");
-  bin = require("@nwjs-binaries/linux-x64");
-} else {
-  console.error("NW.js is not supported on this platform:", process.platform);
+try {
+  bin = require(`@nwjs-binaries/${osTag}-${arch}`);
+} catch (err) {
+  console.error(
+    [
+      "Failed to load NW.js. Maybe it isn't supported on this platform?",
+      `Platform/arch was: ${osTag}-${arch}`,
+      "",
+    ].join("\n")
+  );
+  console.error(err);
   process.exit(1);
 }
 
