@@ -7,13 +7,23 @@ const util = require("util");
 // call it with the wrong arguments.
 function patchChrome(chrome) {
   function customInspect(recurseTimes, options) {
-    const publicAPI = {};
+    const propertiesForInspect = {};
     for (const key in this) {
-      if (key.indexOf("Private") === -1) {
-        publicAPI[key] = this[key];
+      if (
+        key.includes("Private") ||
+        key === "userScripts" ||
+        key === "extension"
+      ) {
+        Object.defineProperty(propertiesForInspect, key, {
+          get() {
+            return this[key];
+          },
+        });
+      } else {
+        propertiesForInspect[key] = this[key];
       }
     }
-    return publicAPI;
+    return propertiesForInspect;
   }
 
   // Prefer the Symbol util.inspect.custom where
