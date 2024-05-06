@@ -7,7 +7,8 @@
     "node-nw": "bin.js"
   },
   "scripts": {
-    "test": "littletest --setup-file __test_helpers__/setup.js --concurrency 1 __tests__/**/*.js",
+    "test": "npm run test-files -- __tests__/**/*.js",
+    "test-files": "littletest --setup-file __test_helpers__/setup.js --concurrency 1",
     "cli": "env DEBUG='node-nw:*' node bin.js"
   },
   "repository": {
@@ -44,7 +45,7 @@
   "devDependencies": {
     "@babel/core": "^7.24.4",
     "@babel/preset-env": "^7.24.4",
-    "@littlethings/test": "^3.2.1",
+    "@littlethings/test": "^3.3.1",
     "eslint": "^8.57.0",
     "eslint-config-unobtrusive": "^1.2.5",
     "eslint-plugin-import": "^2.29.1",
