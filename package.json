@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "npm run test-files -- __tests__/**/*.js",
-    "test-files": "littletest --setup-file __test_helpers__/setup.js --concurrency 1",
+    "test-files": "littletest --setup-file __test_helpers__/setup.js",
     "cli": "env DEBUG='node-nw:*' node bin.js"
   },
   "repository": {

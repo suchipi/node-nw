@@ -31,11 +31,11 @@ describe("require", () => {
       const join = (...parts) => parts.join(path.sep);
 
       describe("with a relative path", () => {
-        testsFn(join("tests/test-helpers", "fixtures", scriptFile));
+        testsFn(join("__test_helpers__", "fixtures", scriptFile));
       });
 
       describe("with a relative path starting with a dot", () => {
-        testsFn(join(".", "tests/test-helpers", "fixtures", scriptFile));
+        testsFn(join(".", "__test_helpers__", "fixtures", scriptFile));
       });
 
       describe("with an absolute path", () => {
@@ -44,7 +44,7 @@ describe("require", () => {
             __dirname,
             "..",
             "..",
-            "tests/test-helpers",
+            "__test_helpers__",
             "fixtures",
             scriptFile
           )
