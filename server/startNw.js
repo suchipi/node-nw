@@ -34,7 +34,7 @@ module.exports = function startNw(binary, envConfig, userDataDir, argv) {
   let exitedResolve = () => {};
 
   let running = true;
-  onExit(1, async () => {
+  onExit(1, async function sigkillNwjs() {
     if (running) {
       debug("Killing NW.js process");
       nw.kill("SIGKILL");

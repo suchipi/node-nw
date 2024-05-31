@@ -3,7 +3,7 @@ const path = require("path");
 const debug = require("debug")("node-nw:server/prepareUserDataDir");
 const { onExit } = require("./exiting");
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 module.exports = function prepareUserDataDir() {
   const os = require("os");
@@ -13,7 +13,7 @@ module.exports = function prepareUserDataDir() {
   const userDataDir = path.join(os.tmpdir(), "node-nw-profile-" + process.pid);
   debug(`Creating user data dir (${userDataDir})`);
   mkdirp.sync(userDataDir);
-  onExit(2, async () => {
+  onExit(2, async function removeUserDataDir() {
     debug(`Removing user data dir (${userDataDir})`);
     try {
       rimraf.sync(userDataDir);
