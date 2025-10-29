@@ -39,7 +39,7 @@ RUN mkdir -p /usr/local/nvm
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
-RUN source $NVM_DIR/nvm.sh && nvm install 21
+RUN source $NVM_DIR/nvm.sh && nvm install 22
 
 ENV DISPLAY :0
 
