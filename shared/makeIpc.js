@@ -8,11 +8,13 @@ module.exports = function makeIpc(receiveHandlers) {
     socket.on("data", receive);
   }
 
-  function receive(data) {
+  function receive(dataBuf) {
+    const dataStr = dataBuf.toString("utf-8");
     // TODO: handle chunked/interrupted data
-    debug(`IPC received: ${data}`);
+    debug(`IPC received: ${dataStr}`);
 
-    const commands = data
+    const commands = dataStr
+      .toString("utf-8")
       .split("\n")
       .filter(Boolean)
       .map((datum) => JSON.parse(datum));
@@ -28,16 +30,9 @@ module.exports = function makeIpc(receiveHandlers) {
   function send(name, argument) {
     debug(`IPC sending: ${util.inspect({ name, argument })}`);
 
-    const data =
-      JSON.stringify({
-        name,
-        argument,
-      }) + "\n";
+    const data = JSON.stringify({ name, argument }) + "\n";
     socket.write(data);
   }
 
-  return {
-    setSocket,
-    send,
-  };
+  return { setSocket, send };
 };

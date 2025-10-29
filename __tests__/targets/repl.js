@@ -45,4 +45,16 @@ describe("repl", () => {
       expect(stripAnsi(run.result.stdout)).toEqual(run.result.stdout);
     });
   });
+
+  it("has a .devtools command to open a devtools window", async () => {
+    const run = runRepl();
+    await run.outputContains("> ");
+    run.write(".devtools\n");
+    run.clearOutputContainsBuffer();
+    await run.outputContains("> ");
+    run.kill();
+    await run.completion;
+    // No easy way to tell if it worked... test runs it, at least
+    expect(run.result.code).toBe(0);
+  });
 });
