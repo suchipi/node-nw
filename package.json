@@ -26,10 +26,10 @@
   },
   "homepage": "https://github.com/suchipi/node-nw#readme",
   "dependencies": {
-    "debug": "^4.3.4",
+    "debug": "^4.4.3",
     "mkdirp": "^3.0.1",
     "pipe-wrench": "^1.0.0",
-    "rimraf": "^5.0.5",
+    "rimraf": "^6.0.1",
     "shell-escape": "^0.2.0",
     "supports-color": "^8.1.1",
     "yargs-parser": "^21.1.1"
@@ -43,18 +43,13 @@
     "@nwjs-binaries/win-x64": "0.87.0-sdk"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.4",
-    "@babel/preset-env": "^7.24.4",
     "@littlethings/test": "^3.3.2",
     "eslint": "^8.57.0",
     "eslint-config-unobtrusive": "^1.2.5",
-    "eslint-plugin-import": "^2.29.1",
-    "expect": "^29.7.0",
-    "first-base": "^1.4.0",
-    "glomp": "^3.1.1",
-    "kame": "^0.13.0",
-    "nice-path": "^2.0.0",
-    "prettier": "^3.2.5",
+    "eslint-plugin-import": "^2.32.0",
+    "expect": "^30.2.0",
+    "first-base": "^1.5.2",
+    "prettier": "^3.6.2",
     "strip-ansi": "^6.0.1"
   }
 }
