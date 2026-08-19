@@ -1,6 +1,7 @@
 __tests__
 __test_helpers__
 babel.config.js
+vitest.config.mjs
 .eslintrc
 .prettierrc
 node_modules_docker

@@ -7,7 +7,7 @@
     "node-nw": "bin.js"
   },
   "scripts": {
-    "test": "littletest --concurrency 1 --setup-file __test_helpers__/setup.js",
+    "test": "vitest run",
     "cli": "env DEBUG='node-nw:*' node bin.js"
   },
   "repository": {
@@ -42,13 +42,12 @@
     "@nwjs-binaries/win-x64": "0.87.0-sdk"
   },
   "devDependencies": {
-    "@littlethings/test": "^3.3.2",
     "eslint": "^8.57.0",
     "eslint-config-unobtrusive": "^1.2.5",
     "eslint-plugin-import": "^2.32.0",
-    "expect": "^30.4.1",
     "first-base": "^4.0.1",
     "prettier": "^3.9.6",
-    "strip-ansi": "^6.0.1"
+    "strip-ansi": "^6.0.1",
+    "vitest": "^4.1.11"
   }
 }
