@@ -1,23 +1,28 @@
-"use strict";
-const debug = require("debug")("node-nw:server/index");
-const { getTarget } = require("../shared/argv");
-const startNw = require("./startNw");
-const setupPipeWrenchSockets = require("./setupPipeWrenchSockets");
-const exitOnKillSignal = require("./exitOnKillSignal");
-const prepareUserDataDir = require("./prepareUserDataDir");
-const determineEnvConfig = require("./determineEnvConfig");
+import makeDebug from "debug";
+import { getTarget } from "../shared/argv";
+import startNw from "./startNw";
+import setupPipeWrenchSockets from "./setupPipeWrenchSockets";
+import exitOnKillSignal from "./exitOnKillSignal";
+import prepareUserDataDir from "./prepareUserDataDir";
+import determineEnvConfig from "./determineEnvConfig";
+import helpText from "./help";
 
-module.exports = function nodeNw(binary, cwd, argv) {
-  const [target] = getTarget(argv, process.stdin.isTTY);
+const debug = makeDebug("node-nw:server/index");
+
+export default function nodeNw(
+  binary: string,
+  cwd: string,
+  argv: Array<string>
+) {
+  const [target] = getTarget(argv, Boolean(process.stdin.isTTY));
   debug(`Target is: '${target}'`);
   switch (target) {
     case "version": {
-      const version = require("../package.json").version;
+      const { version } = require("../../package.json") as { version: string };
       console.log("v" + version);
       break;
     }
     case "help": {
-      const helpText = require("./help");
       console.log(helpText);
       break;
     }
@@ -31,4 +36,4 @@ module.exports = function nodeNw(binary, cwd, argv) {
       exitOnKillSignal();
     }
   }
-};
+}

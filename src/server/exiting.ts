@@ -1,14 +1,22 @@
-"use strict";
-const debug = require("debug")("node-nw:server/exiting");
+import makeDebug from "debug";
 
-const callbacks = [[], [], []];
+const debug = makeDebug("node-nw:server/exiting");
 
-function onExit(phase, callback) {
+export type ExitPhase = 0 | 1 | 2;
+export type ExitCallback = () => void | Promise<void>;
+
+const callbacks: [
+  Array<ExitCallback>,
+  Array<ExitCallback>,
+  Array<ExitCallback>,
+] = [[], [], []];
+
+export function onExit(phase: ExitPhase, callback: ExitCallback) {
   callbacks[phase].unshift(callback);
 }
 
 let exiting = false;
-async function exit(code) {
+export async function exit(code?: number | null) {
   debug(`exit called with: ${code}`);
 
   if (exiting) {
@@ -38,8 +46,3 @@ async function exit(code) {
     process.exit(code);
   }
 }
-
-module.exports = {
-  onExit,
-  exit,
-};

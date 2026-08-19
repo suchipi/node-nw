@@ -1,13 +1,12 @@
-"use strict";
-const util = require("util");
+import * as util from "util";
 
 // It's not safe to try to inspect any of Chrome's Private APIs;
 // some of them blow up because they try to use an internal
 // chrome.developerPrivate.inspect to print themselves, but they
 // call it with the wrong arguments.
-function patchChrome(chrome) {
-  function customInspect(recurseTimes, options) {
-    const propertiesForInspect = {};
+function patchChrome(chrome: any) {
+  function customInspect(this: any, recurseTimes: number, options: any) {
+    const propertiesForInspect: Record<string, any> = {};
     for (const key in this) {
       if (
         key.includes("Private") ||

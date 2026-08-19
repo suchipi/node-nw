@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import runCLI from "../__test_helpers__/runCLI";
 
 describe("exiting", () => {
-  ["SIGINT", "SIGTERM", "SIGHUP"].forEach((signal) => {
+  (["SIGINT", "SIGTERM", "SIGHUP"] as const).forEach((signal) => {
     it(`exits when receiving ${signal}`, async () => {
       const run = runCLI(["-e", "console.log('hi');"]);
       await run.outputContains("hi");

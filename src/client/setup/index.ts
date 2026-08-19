@@ -1,11 +1,18 @@
-"use strict";
-const debug = require("debug")("node-nw:client/setup/index");
+import makeDebug from "debug";
+import type { EnvConfig } from "../../shared/envConfig";
+import * as replClient from "../replClient";
+import setupSockets from "./sockets";
+import ipc from "./ipc";
+import makeConsole from "./console";
+import makeProcessObject from "./process";
+
+const debug = makeDebug("node-nw:client/setup/index");
 
 // We get launched with these arguments:
 // 0: Unrelated --user-data-dir argument that doesn't get filtered out
 // 1: Environment config JSON string
 // ...: process.argv.slice(2) from node
-const envConfig = JSON.parse(nw.App.argv[1]);
+const envConfig: EnvConfig = JSON.parse(nw.App.argv[1]!);
 const argv = nw.App.argv.slice(2);
 
 debug("Env config: %o", envConfig);
@@ -18,16 +25,18 @@ process.on("uncaughtException", function handleUncaughtException(error) {
 });
 
 // ipc sockets, used for stdio and well as general-purpose communication
-const sockets = require("./sockets")(envConfig.pid);
+const sockets = setupSockets(envConfig.pid);
 
-const ipc = require("./ipc");
 ipc.setSocket(sockets.ipc);
 
 // Log to node stdout/stderr in addition to browser console
-global.console = require("./console")(sockets.stdout, sockets.stderr);
+global.console = makeConsole(
+  sockets.stdout,
+  sockets.stderr
+) as unknown as Console;
 
 // Set up process global which forwards stuff to the node server
-global.process = require("./process")({
+global.process = makeProcessObject({
   stdout: sockets.stdout,
   stderr: sockets.stderr,
   stdin: sockets.stdin,
@@ -36,7 +45,6 @@ global.process = require("./process")({
   ipc,
 });
 
-const replClient = require("../replClient");
 replClient.setSocket(sockets.repl);
 replClient.setSupportsColor(envConfig.supportsColor);
 

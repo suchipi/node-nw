@@ -1,12 +1,13 @@
-"use strict";
-const pipeWrench = require("pipe-wrench");
-const debug = require("debug")("node-nw:server/setupPipeWrenchSockets");
-const pipeWrenchIdentifiers = require("../shared/pipeWrenchIdentifiers");
-const { onExit } = require("./exiting");
-const ipc = require("./ipc");
-const replServer = require("./replServer");
+import * as pipeWrench from "pipe-wrench";
+import makeDebug from "debug";
+import pipeWrenchIdentifiers from "../shared/pipeWrenchIdentifiers";
+import { onExit } from "./exiting";
+import ipc from "./ipc";
+import * as replServer from "./replServer";
 
-module.exports = function setupPipeWrenchSockets(target) {
+const debug = makeDebug("node-nw:server/setupPipeWrenchSockets");
+
+export default function setupPipeWrenchSockets(target: string) {
   const identifiers = pipeWrenchIdentifiers(process.pid);
 
   const cleanupStdout = pipeWrench.server(
@@ -72,4 +73,4 @@ module.exports = function setupPipeWrenchSockets(target) {
     cleanupIpc();
     cleanupRepl();
   });
-};
+}

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-"use strict";
+import makeDebug from "debug";
+import nodeNw from "./index";
 
-const debug = require("debug")("node-nw:server/bin");
-const nodeNw = require("./index");
+const debug = makeDebug("node-nw:server/bin");
 
 const osTag =
   {
@@ -14,7 +14,7 @@ const arch = process.arch;
 
 debug(`Platform/arch: ${osTag}-${arch}`);
 
-let bin;
+let bin: string;
 try {
   bin = require(`@nwjs-binaries/${osTag}-${arch}`);
 } catch (err) {

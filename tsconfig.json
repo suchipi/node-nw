@@ -1,0 +1,30 @@
+{
+  "include": ["src/**/*.ts"],
+
+  "compilerOptions": {
+    "lib": ["es2021"],
+    "target": "es2021",
+
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "rootDir": "src",
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "declaration": true,
+
+    "strict": true,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false,
+    "noUncheckedIndexedAccess": true
+  }
+}

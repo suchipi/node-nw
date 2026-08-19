@@ -1,4 +1,4 @@
-module.exports = `
+const helpText = `
 Usage: node-nw [options] [ -e script | script.js ] [arguments]
 
 Options:
@@ -7,3 +7,5 @@ Options:
   -e, --eval script     evaluate script
   -i, --interactive     enter REPL
 `.replace(/^\n/, "");
+
+export default helpText;

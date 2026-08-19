@@ -1,23 +1,25 @@
-"use strict";
-const vm = require("vm");
-const util = require("util");
+import * as net from "net";
+import * as util from "util";
+import * as vm from "vm";
 
-let repl;
-function setSocket(socket) {
+let repl: net.Socket;
+export function setSocket(socket: net.Socket) {
   repl = socket;
 }
 
-let supportsColor;
-function setSupportsColor(bool) {
+let supportsColor: boolean;
+export function setSupportsColor(bool: boolean) {
   supportsColor = bool;
 }
 
-function start() {
+export function start() {
   repl.setEncoding("utf-8");
-  repl.on("data", function(data) {
+  repl.on("data", function (data) {
     let result;
     try {
-      result = vm.runInThisContext(data, { filename: "repl" });
+      result = vm.runInThisContext(data.toString("utf-8"), {
+        filename: "repl",
+      });
     } catch (error) {
       result = error;
     }
@@ -30,9 +32,3 @@ function start() {
     repl.write("---NODE_NW_SOCKET_RESPONSE_END---");
   });
 }
-
-module.exports = {
-  setSocket,
-  setSupportsColor,
-  start,
-};

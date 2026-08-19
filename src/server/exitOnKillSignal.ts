@@ -1,16 +1,18 @@
-"use strict";
-const debug = require("debug")("node-nw:server/exitOnKillSignal");
-const { exit } = require("./exiting");
+import * as readline from "readline";
+import makeDebug from "debug";
+import { exit } from "./exiting";
 
-module.exports = function exitOnKillSignal() {
+const debug = makeDebug("node-nw:server/exitOnKillSignal");
+
+export default function exitOnKillSignal() {
   if (process.platform === "win32") {
     debug("Registering readline interface for SIGINT handler");
-    const readline = require("readline").createInterface({
+    const readlineInterface = readline.createInterface({
       input: process.stdin,
     });
 
-    readline.on("SIGINT", () => {
-      process.emit("SIGINT");
+    readlineInterface.on("SIGINT", () => {
+      process.emit("SIGINT", "SIGINT");
     });
   }
 
@@ -33,4 +35,4 @@ module.exports = function exitOnKillSignal() {
     debug(`process.exit was called with code: ${code}`);
     exit(code);
   });
-};
+}

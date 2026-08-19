@@ -1,13 +1,20 @@
-"use strict";
-const path = require("path");
-const debug = require("debug")("node-nw:server/startNw");
-const { onExit, exit } = require("./exiting");
+import * as child_process from "child_process";
+import * as path from "path";
+import makeDebug from "debug";
+import shellEscape from "shell-escape";
+import { onExit, exit } from "./exiting";
+import type { EnvConfig } from "../shared/envConfig";
 
-module.exports = function startNw(binary, envConfig, userDataDir, argv) {
-  const child_process = require("child_process");
-  const shellEscape = require("shell-escape");
+const debug = makeDebug("node-nw:server/startNw");
+const nwDebug = makeDebug("node-nw:nw");
 
-  function escape(arg) {
+export default function startNw(
+  binary: string,
+  envConfig: EnvConfig,
+  userDataDir: string,
+  argv: Array<string>
+) {
+  function escape(arg: string) {
     if (process.platform === "win32") {
       if (arg.indexOf(" ") !== -1) {
         return '"' + arg + '"';
@@ -19,17 +26,14 @@ module.exports = function startNw(binary, envConfig, userDataDir, argv) {
     }
   }
 
-  const spawnArgs = [
-    binary,
-    [
-      path.resolve(__dirname, "..", "client"),
-      "--user-data-dir=" + escape(userDataDir),
-      JSON.stringify(envConfig),
-    ].concat(argv),
-    { stdio: "pipe" },
-  ];
-  debug("Spawning: %o", spawnArgs);
-  const nw = child_process.spawn(...spawnArgs);
+  const nwArgv = [
+    path.resolve(__dirname, "..", "client"),
+    "--user-data-dir=" + escape(userDataDir),
+    JSON.stringify(envConfig),
+  ].concat(argv);
+  const spawnOptions = { stdio: "pipe" } as const;
+  debug("Spawning: %o", [binary, nwArgv, spawnOptions]);
+  const nw = child_process.spawn(binary, nwArgv, spawnOptions);
 
   let exitedResolve = () => {};
 
@@ -38,7 +42,9 @@ module.exports = function startNw(binary, envConfig, userDataDir, argv) {
     if (running) {
       debug("Killing NW.js process");
       nw.kill("SIGKILL");
-      await new Promise((resolve) => (exitedResolve = resolve));
+      await new Promise<void>((resolve) => {
+        exitedResolve = resolve;
+      });
       nw.unref();
     } else {
       debug("Exit was called, but the process is already exiting; ignoring");
@@ -72,7 +78,6 @@ module.exports = function startNw(binary, envConfig, userDataDir, argv) {
     exit();
   });
 
-  const nwDebug = require("debug")("node-nw:nw");
   nw.stdout.on("data", (data) => {
     nwOutput += data;
 
@@ -83,4 +88,4 @@ module.exports = function startNw(binary, envConfig, userDataDir, argv) {
 
     nwDebug("stderr: %s", data);
   });
-};
+}

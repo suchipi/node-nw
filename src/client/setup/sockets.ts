@@ -1,8 +1,7 @@
-"use strict";
-const pipeWrench = require("pipe-wrench");
-const pipeWrenchIdentifiers = require("../../shared/pipeWrenchIdentifiers");
+import * as pipeWrench from "pipe-wrench";
+import pipeWrenchIdentifiers from "../../shared/pipeWrenchIdentifiers";
 
-module.exports = function setupSockets(pid) {
+export default function setupSockets(pid: number) {
   const identifiers = pipeWrenchIdentifiers(pid);
 
   const stdout = pipeWrench.client(identifiers.stdout);
@@ -18,4 +17,4 @@ module.exports = function setupSockets(pid) {
     ipc,
     repl,
   };
-};
+}

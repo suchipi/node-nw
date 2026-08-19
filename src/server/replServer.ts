@@ -1,10 +1,11 @@
-const repl = require("repl");
-const ipc = require("./ipc");
-const { exit } = require("./exiting");
+import * as net from "net";
+import * as repl from "repl";
+import ipc from "./ipc";
+import { exit } from "./exiting";
 
 const SOCKET_RESPONSE_END = "---NODE_NW_SOCKET_RESPONSE_END---";
 
-function start(socket) {
+export function start(socket: net.Socket) {
   const replServer = repl.start({
     useGlobal: true,
     writer: (output) => output,
@@ -14,7 +15,7 @@ function start(socket) {
         return;
       }
       let dataSoFar = "";
-      function onData(data) {
+      function onData(data: Buffer | string) {
         dataSoFar += data;
         if (dataSoFar.endsWith(SOCKET_RESPONSE_END)) {
           const dataWithoutEnd = dataSoFar.slice(
@@ -42,7 +43,3 @@ function start(socket) {
     },
   });
 }
-
-module.exports = {
-  start,
-};

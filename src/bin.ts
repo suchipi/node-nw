@@ -1,4 +1,2 @@
 #!/usr/bin/env node
-"use strict";
-
-require("./server/bin");
+import "./server/bin";

@@ -1,7 +1,13 @@
-const debug = require("debug")("node-nw:server/ipc");
-const makeIpc = require("../shared/makeIpc");
+import makeDebug from "debug";
+import makeIpc from "../shared/makeIpc";
+import type {
+  ServerIpcHandlers,
+  ClientIpcHandlers,
+} from "../shared/ipcHandlers";
 
-module.exports = makeIpc({
+const debug = makeDebug("node-nw:server/ipc");
+
+export default makeIpc<ClientIpcHandlers, ServerIpcHandlers>({
   "stdin-raw-mode"(value) {
     debug(`received stdin-raw-mode: ${value}`);
     process.stdin.setRawMode(value);

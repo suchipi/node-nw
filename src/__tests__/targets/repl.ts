@@ -1,22 +1,16 @@
-import { describe, it, beforeEach, expect } from "vitest";
-import runCLI from "../../__test_helpers__/runCLI";
+import { describe, it, expect } from "vitest";
 import stripAnsi from "strip-ansi";
+import runCLI from "../../__test_helpers__/runCLI";
 
 describe("repl", () => {
-  let pty;
-  const runRepl = () => runCLI(["-i"], { pty });
-  beforeEach(() => {
-    pty = true;
-  });
-
   it("starts a repl", async () => {
-    const run = runRepl();
+    const run = runCLI(["-i"], { pty: true });
     await run.outputContains("> ");
     run.kill();
   });
 
   it("evaluates each written line and prints back `util.inspect`ed values", async () => {
-    const run = runRepl();
+    const run = runCLI(["-i"], { pty: true });
     await run.outputContains("> ");
     run.write("document\n");
     await run.outputContains("HTMLDocument { location: [Getter/Setter] }");
@@ -27,7 +21,7 @@ describe("repl", () => {
 
   describe("with a TTY", () => {
     it("uses colors", async () => {
-      const run = runRepl();
+      const run = runCLI(["-i"], { pty: true });
       await run.outputContains("> ");
       run.kill();
       expect(stripAnsi(run.result.output)).not.toEqual(run.result.output);
@@ -35,12 +29,8 @@ describe("repl", () => {
   });
 
   describe("without a TTY", () => {
-    beforeEach(() => {
-      pty = false;
-    });
-
     it("does not use colors", async () => {
-      const run = runRepl();
+      const run = runCLI(["-i"], { pty: false });
       await run.outputContains("> ");
       run.kill();
       expect(stripAnsi(run.result.stdout)).toEqual(run.result.stdout);
@@ -48,7 +38,7 @@ describe("repl", () => {
   });
 
   it("has a .devtools command to open a devtools window", async () => {
-    const run = runRepl();
+    const run = runCLI(["-i"], { pty: true });
     await run.outputContains("> ");
     run.write(".devtools\n");
     run.clearOutputContainsBuffer();

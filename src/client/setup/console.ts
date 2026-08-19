@@ -1,10 +1,16 @@
-"use strict";
-const Console = require("console").Console;
+import { Console } from "console";
 
-module.exports = function makeConsole(stdout, stderr) {
-  const devtoolsConsole = global.console;
-  const nodeConsole = new Console(stdout, stderr);
-  const multiPlexConsole = {};
+export type MultiPlexConsole = {
+  [name: string]: (...args: Array<any>) => void;
+};
+
+export default function makeConsole(
+  stdout: NodeJS.WritableStream,
+  stderr: NodeJS.WritableStream
+): MultiPlexConsole {
+  const devtoolsConsole: any = global.console;
+  const nodeConsole: any = new Console(stdout, stderr);
+  const multiPlexConsole: MultiPlexConsole = {};
   [
     "assert",
     "dir",
@@ -16,7 +22,7 @@ module.exports = function makeConsole(stdout, stderr) {
     "trace",
     "warn",
   ].forEach((name) => {
-    multiPlexConsole[name] = function() {
+    multiPlexConsole[name] = function () {
       devtoolsConsole[name].apply(devtoolsConsole, arguments);
       nodeConsole[name].apply(nodeConsole, arguments);
     };
@@ -24,4 +30,4 @@ module.exports = function makeConsole(stdout, stderr) {
   });
 
   return multiPlexConsole;
-};
+}

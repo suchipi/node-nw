@@ -1,8 +1,14 @@
-"use strict";
-const path = require("path");
-const yargsParser = require("yargs-parser");
+import * as path from "path";
+import yargsParser from "yargs-parser";
 
-function getTarget(argv, stdinIsTTY) {
+export type Target =
+  | ["version"]
+  | ["help"]
+  | ["eval", string]
+  | ["repl"]
+  | ["require", string];
+
+export function getTarget(argv: Array<string>, stdinIsTTY: boolean): Target {
   const config = yargsParser(argv, {
     alias: {
       version: ["v"],
@@ -12,6 +18,8 @@ function getTarget(argv, stdinIsTTY) {
     },
   });
 
+  const firstPositional = config._[0];
+
   if (config.version) {
     return ["version"];
   } else if (config.help) {
@@ -20,8 +28,8 @@ function getTarget(argv, stdinIsTTY) {
     return ["eval", config.eval];
   } else if (config.interactive) {
     return ["repl"];
-  } else if (config._[0]) {
-    return ["require", path.resolve(process.cwd(), config._[0])];
+  } else if (firstPositional) {
+    return ["require", path.resolve(process.cwd(), String(firstPositional))];
   } else {
     if (stdinIsTTY) {
       return ["repl"];
@@ -30,7 +38,3 @@ function getTarget(argv, stdinIsTTY) {
     }
   }
 }
-
-module.exports = {
-  getTarget,
-};

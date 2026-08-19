@@ -1,15 +1,15 @@
-"use strict";
-const path = require("path");
-const debug = require("debug")("node-nw:server/prepareUserDataDir");
-const { onExit } = require("./exiting");
+import * as os from "os";
+import * as path from "path";
+import makeDebug from "debug";
+import * as mkdirp from "mkdirp";
+import * as rimraf from "rimraf";
+import { onExit } from "./exiting";
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const debug = makeDebug("node-nw:server/prepareUserDataDir");
 
-module.exports = function prepareUserDataDir() {
-  const os = require("os");
-  const mkdirp = require("mkdirp");
-  const rimraf = require("rimraf");
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+export default function prepareUserDataDir(): string {
   const userDataDir = path.join(os.tmpdir(), "node-nw-profile-" + process.pid);
   debug(`Creating user data dir (${userDataDir})`);
   mkdirp.sync(userDataDir);
@@ -26,4 +26,4 @@ module.exports = function prepareUserDataDir() {
   });
 
   return userDataDir;
-};
+}

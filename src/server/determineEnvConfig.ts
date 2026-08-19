@@ -1,9 +1,11 @@
-"use strict";
-const debug = require("debug")("node-nw:server/determineEnvConfig");
-const supportsColor = require("supports-color");
+import makeDebug from "debug";
+import supportsColor from "supports-color";
+import type { EnvConfig } from "../shared/envConfig";
 
-module.exports = function determineEnvConfig(cwd) {
-  const envConfig = {
+const debug = makeDebug("node-nw:server/determineEnvConfig");
+
+export default function determineEnvConfig(cwd: string): EnvConfig {
+  const envConfig: EnvConfig = {
     cwd,
     pid: process.pid,
     supportsColor: Boolean(supportsColor),
@@ -14,4 +16,4 @@ module.exports = function determineEnvConfig(cwd) {
   debug("envConfig: %o", envConfig);
 
   return envConfig;
-};
+}

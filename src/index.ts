@@ -1,5 +1,3 @@
-"use strict";
+import nodeNw from "./server/index";
 
-const nodeNw = require("./server/index");
-
-module.exports = nodeNw;
+export = nodeNw;

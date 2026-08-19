@@ -1,15 +1,40 @@
-"use strict";
-const debug = require("debug")("node-nw:client/setup/process");
+import * as net from "net";
+import makeDebug from "debug";
+import type { EnvConfig } from "../../shared/envConfig";
+import type { ServerIpcHandlers } from "../../shared/ipcHandlers";
+import type { Ipc } from "../../shared/makeIpc";
 
-module.exports = function makeProcessObject({
-  stdout,
-  stderr,
-  stdin,
-  envConfig,
-  argv,
-  ipc,
-}) {
+const debug = makeDebug("node-nw:client/setup/process");
+
+// The sockets arrive as plain sockets; makeProcessObject is what puts these
+// node stdio stream properties onto them.
+export type StdinSocket = net.Socket & {
+  isTTY: boolean;
+  isRaw: boolean;
+  setRawMode: (mode: boolean) => void;
+};
+
+export type StdoutSocket = net.Socket & {
+  isTTY: boolean;
+};
+
+export type MakeProcessObjectOptions = {
+  stdout: net.Socket;
+  stderr: net.Socket;
+  stdin: net.Socket;
+  envConfig: EnvConfig;
+  argv: Array<string>;
+  ipc: Ipc<ServerIpcHandlers>;
+};
+
+export default function makeProcessObject(
+  options: MakeProcessObjectOptions
+): NodeJS.Process {
   debug("Creating 'process' global");
+
+  const { stderr, envConfig, argv, ipc } = options;
+  const stdin = options.stdin as StdinSocket;
+  const stdout = options.stdout as StdoutSocket;
 
   const realProcess = process;
   const processOverlay = Object.create(null);
@@ -40,7 +65,7 @@ module.exports = function makeProcessObject({
   // process.stdin normally has a special setRawMode function on it.
   // This defines that function as one that uses the ipc channel to tell the
   // node process to set raw mode on the "real" process.stdin on its end.
-  stdin.setRawMode = function setRawMode(bool) {
+  stdin.setRawMode = function setRawMode(bool: boolean) {
     debug(`Client called setRawMode(${bool})`);
     if (bool) {
       ipc.send("stdin-raw-mode", true);
@@ -67,7 +92,7 @@ module.exports = function makeProcessObject({
   processOverlay.argv = [realProcess.argv[0]].concat(argv);
 
   Object.defineProperty(processOverlay, "exit", {
-    value: (code) => {
+    value: (code?: number) => {
       if (code != null) {
         ipc.send("set-exit-code", code);
       }
@@ -79,7 +104,7 @@ module.exports = function makeProcessObject({
 
   let _exitCode = 0;
   Object.defineProperty(processOverlay, "exitCode", {
-    set(code) {
+    set(code: number) {
       ipc.send("set-exit-code", code);
       _exitCode = code;
     },
@@ -89,4 +114,4 @@ module.exports = function makeProcessObject({
   });
 
   return newProcess;
-};
+}

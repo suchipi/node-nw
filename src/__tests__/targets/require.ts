@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
-import path from "path";
+import * as path from "path";
 import runCLI from "../../__test_helpers__/runCLI";
 
 describe("require", () => {
   Object.entries({
-    "loaded.js": (scriptPath) => {
+    "loaded.js": (scriptPath: string) => {
       it("requires the file", async () => {
         const run = runCLI([scriptPath]);
         await run.outputContains("loaded");
@@ -12,7 +12,7 @@ describe("require", () => {
         expect(run.result.stdout).toEqual("loaded\n");
       });
     },
-    "argv.js": (scriptPath) => {
+    "argv.js": (scriptPath: string) => {
       it("passes argv", async () => {
         const run = runCLI([scriptPath, "one", "two"]);
         await run.outputContains(/one/);
@@ -29,14 +29,14 @@ describe("require", () => {
   }).forEach(([scriptFile, testsFn]) => {
     describe(scriptFile, () => {
       // Not using path.join because we want to preserve leading `./`
-      const join = (...parts) => parts.join(path.sep);
+      const join = (...parts: Array<string>) => parts.join(path.sep);
 
       describe("with a relative path", () => {
-        testsFn(join("__test_helpers__", "fixtures", scriptFile));
+        testsFn(join("src", "__test_helpers__", "fixtures", scriptFile));
       });
 
       describe("with a relative path starting with a dot", () => {
-        testsFn(join(".", "__test_helpers__", "fixtures", scriptFile));
+        testsFn(join(".", "src", "__test_helpers__", "fixtures", scriptFile));
       });
 
       describe("with an absolute path", () => {

@@ -2,13 +2,15 @@
   "name": "node-nw",
   "version": "0.7.1",
   "description": "Execute some node script in a headless nw.js instance",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
-    "node-nw": "bin.js"
+    "node-nw": "dist/bin.js"
   },
   "scripts": {
-    "test": "vitest run",
-    "cli": "env DEBUG='node-nw:*' node bin.js"
+    "build": "tsc && cp src/client/package.json dist/client/package.json",
+    "test": "npm run build && vitest run",
+    "cli": "env DEBUG='node-nw:*' node dist/bin.js"
   },
   "repository": {
     "type": "git",
@@ -42,12 +44,15 @@
     "@nwjs-binaries/win-x64": "0.87.0-sdk"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-unobtrusive": "^1.2.5",
-    "eslint-plugin-import": "^2.32.0",
+    "@types/debug": "^4.1.13",
+    "@types/node": "^26.2.0",
+    "@types/shell-escape": "^0.2.3",
+    "@types/supports-color": "^8.1.3",
+    "@types/yargs-parser": "^21.0.3",
     "first-base": "^4.0.1",
     "prettier": "^3.9.6",
     "strip-ansi": "^6.0.1",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.11"
   }
 }

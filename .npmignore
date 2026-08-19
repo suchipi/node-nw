@@ -1,8 +1,8 @@
-__tests__
-__test_helpers__
-babel.config.js
+src
+dist/__tests__
+dist/__test_helpers__
+tsconfig.json
 vitest.config.mjs
-.eslintrc
 .prettierrc
 node_modules_docker
 docker-image
