@@ -7,8 +7,7 @@
     "node-nw": "bin.js"
   },
   "scripts": {
-    "test": "npm run test-files -- __tests__/**/*.js",
-    "test-files": "littletest --concurrency 1 --setup-file __test_helpers__/setup.js",
+    "test": "littletest --concurrency 1 --setup-file __test_helpers__/setup.js",
     "cli": "env DEBUG='node-nw:*' node bin.js"
   },
   "repository": {
