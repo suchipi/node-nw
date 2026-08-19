@@ -29,7 +29,7 @@ describe("repl", () => {
       const run = runRepl();
       await run.outputContains("> ");
       run.kill();
-      expect(stripAnsi(run.result.stdout)).not.toEqual(run.result.stdout);
+      expect(stripAnsi(run.result.output)).not.toEqual(run.result.output);
     });
   });
 

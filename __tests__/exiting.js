@@ -7,7 +7,7 @@ describe("exiting", () => {
       await run.outputContains("hi");
       run.kill(signal);
       await run.completion;
-      expect(run.result.error).toBe(false);
+      expect(run.result.error).toBe(null);
       expect(run.result.code).toBe(0);
     });
   });
