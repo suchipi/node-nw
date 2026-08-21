@@ -1,5 +1,6 @@
 import * as net from "net";
 import * as util from "util";
+import { StringDecoder } from "string_decoder";
 import makeDebug from "debug";
 
 const debug = makeDebug("node-nw:shared/makeIpc");
@@ -25,25 +26,33 @@ export default function makeIpc<
   let socket: net.Socket;
   function setSocket(newSocket: net.Socket) {
     socket = newSocket;
-    socket.on("data", receive);
+    socket.on("data", makeReceiveCallback());
   }
 
-  function receive(dataBuf: Buffer) {
-    const dataStr = dataBuf.toString("utf-8");
-    // TODO: handle chunked/interrupted data
-    debug(`IPC received: ${dataStr}`);
+  function makeReceiveCallback() {
+    const decoder = new StringDecoder("utf-8");
+    let pending = "";
 
-    const commands = dataStr
-      .split("\n")
-      .filter(Boolean)
-      .map((datum) => JSON.parse(datum));
+    return function receive(data: Buffer | string) {
+      // if decoder.write has incomplete data, it doesn't return the incomplete
+      // parts until it receives enough to make it complete.
+      const dataStr = typeof data === "string" ? data : decoder.write(data);
+      debug(`IPC received: ${dataStr}`);
 
-    commands.forEach((command) => {
-      debug(`IPC processing command: ${util.inspect(command)}`);
+      pending += dataStr;
 
-      const handler = (receiveHandlers as IpcHandlers)[command.name];
-      if (handler) handler(command.argument);
-    });
+      const lines = pending.split("\n");
+      pending = lines.pop()!;
+
+      const commands = lines.filter(Boolean).map((line) => JSON.parse(line));
+
+      commands.forEach((command) => {
+        debug(`IPC processing command: ${util.inspect(command)}`);
+
+        const handler = (receiveHandlers as IpcHandlers)[command.name];
+        if (handler) handler(command.argument);
+      });
+    };
   }
 
   function send(name: string, argument?: any) {
